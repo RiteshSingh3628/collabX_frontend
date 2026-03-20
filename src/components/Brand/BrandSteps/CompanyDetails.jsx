@@ -1,11 +1,12 @@
 "use client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import OptionCard from "@/components/common/OptionCard";
+import { updateBrand } from "@/framework/server-action/brand/action";
 
 
 export default function CompanyDetails() {
@@ -13,6 +14,7 @@ export default function CompanyDetails() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
   const { update: updateSession } = useSession();
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const COMPANY_TYPE =[
@@ -63,6 +65,27 @@ export default function CompanyDetails() {
     setSelectedOption2(option);
     
   };
+
+  const onSubmit = async () => {
+      setIsSubmitting(true);
+      startTransition(async () => {
+        const data = {
+          brandType: selectedOption.value,
+          currentStep: "5",
+          companySize: selectedOption2.value,
+          isProfileCompleted: true
+        }
+        const response = await updateBrand(data);
+        if (response?.success) {
+          toast.success(response?.message);
+          await updateSession({ currentStep: "5", isProfileCompleted: true });
+          router.refresh();
+        } else {
+          toast.error(response?.message);
+        }
+        setIsSubmitting(false);
+      });
+    }
 
   return (
     <div className=" min-h-screen flex items-center bg-white justify-center ">
