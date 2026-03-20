@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 
 export default function Header() {
   const { data: session } = useSession();
-  console.log(session);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
