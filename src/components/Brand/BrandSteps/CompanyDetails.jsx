@@ -8,39 +8,59 @@ import { useSession } from "next-auth/react";
 import OptionCard from "@/components/common/OptionCard";
 
 
-export default function BusinessType() {
+export default function CompanyDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState(null);
   const { update: updateSession } = useSession();
   const router = useRouter();
 
-  const OPTIONS = [
-    { id:1, value: "e-commerce", description: "Your business sells products online and delivers across the country." },
-    { id:2, value: "In Person Services", description: "Your business provides services to customers in a specific location. e.g Salons, Gyms, Restaurants, etc." },
-    { id:3, value: "software", description: "Your business provides software as a service to customers. e.g SaaS, Apps, etc." },
-    { id:4, value: "Marketplace", description: "Your business operates as a marketplace connecting buyers and sellers." },
-    {id:5, value: "Digital Services", description: "Your business provides digital services to customers. e.g Online classes, Content Creation, etc."},
-    { id:6, value: "other", description: "If not coverd in the above categories please select this option" },
+  const COMPANY_TYPE =[
+    {
+      id: 3, 
+      value: "Medium Business",
+      description:"Medium business blends growth, agility and customer focus."
+    },
+    {
+      id: 4, 
+      value: "Large Business",
+      description:"Large business combines scale, stability, expertise and market leadership."
+    },
+    {
+      id: 5, 
+      value: "Enterprise",
+      description:"Enterprise combines scale, stability, expertise and market leadership."
+    },
+    {
+      id: 6, 
+      value: "Government",
+      description:"Government combines scale, stability, expertise and market leadership."
+    },
+
   ]
 
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Successfully added data");
-      await updateSession({ currentStep: "3" });
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const COMPANY_SIZE  = [
+    {
+      id: 1,
+      value: "1-10",
+    },
+    {
+      id: 2,
+      value: "10-1000",
+    },
+    {
+      id: 3,
+      value: "10000+",
+    },
+  ]
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
+    
+  };
+
+  const handleOptionSelect2 = (option) => {
+    setSelectedOption2(option);
     
   };
 
@@ -55,10 +75,10 @@ export default function BusinessType() {
                   ONBOARDING
                 </p>
                 <h1 className="reg-serif" style={{ fontSize:"2rem", lineHeight:1.2, color:"#0f172a", margin:0 }}>
-                  Brand Type
+                  Company Details
                 </h1>
                 <p style={{ marginTop:12, fontSize:"0.85rem", color:"#94a3b8", lineHeight:1.65 }}>
-                  Which type of brand are you? Do you offer products, services, software, or something else? Online or inPerson?
+                  We want to tailor the experience according to your company size.
                 </p>
               </div>
 
@@ -68,12 +88,27 @@ export default function BusinessType() {
                 style={{ display:"flex", flexDirection:"column", gap:14 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {OPTIONS.map((option) => (
+                  {COMPANY_TYPE.map((option) => (
                     <OptionCard
-                      key={option.value}
+                      key={option.id}
                       option={option}
                       isSelected={selectedOption?.id === option.id}
                       onSelect={handleOptionSelect}
+                    />
+                  ))}
+                </div>
+
+                <p style={{ marginTop:12, fontSize:"0.85rem", color:"#94a3b8", lineHeight:1.65 }}>
+                  How many employees work at your company?
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {COMPANY_SIZE.map((option) => (
+                    <OptionCard
+                      key={option.id}
+                      option={option}
+                      isSelected={selectedOption2?.id === option.id}
+                      onSelect={handleOptionSelect2}
                     />
                   ))}
                 </div>
