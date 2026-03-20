@@ -75,7 +75,7 @@ function RegisterForm() {
                 Welcome to CollabXSphere. Your brand account is ready to go.
               </p>
               <Link
-                href="/auth/brand/login"
+                href="/auth/login"
                 style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:28, fontSize:"0.875rem", fontWeight:600, color:"#0f172a" }}
               >
                 Go to login <ArrowRight size={14} />
