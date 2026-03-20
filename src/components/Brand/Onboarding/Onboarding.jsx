@@ -1,4 +1,4 @@
-import { BasicInfo, BusinessType } from "@/components/Brand/BrandSteps"
+import { BasicInfo, BusinessType, CompanyDetails, IndustryType } from "@/components/Brand/BrandSteps"
 
 const STEP_CONFIG = {
     1: {
@@ -8,6 +8,14 @@ const STEP_CONFIG = {
     2:{
         title: "Business Type",
         component: ()=><BusinessType/>
+    },
+    3:{
+        title:"Industry Type",
+        component: ()=><IndustryType/>
+    },
+    4:{
+        title:"Company Details",
+        component: ()=><CompanyDetails/>
     }
 }
 
