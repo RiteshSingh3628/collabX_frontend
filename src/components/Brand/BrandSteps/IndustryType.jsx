@@ -1,17 +1,19 @@
 "use client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import OptionCard from "@/components/common/OptionCard";
+import { updateBrand } from "@/framework/server-action/brand/action";
 
 
 export default function IndustryType() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const { update: updateSession } = useSession();
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const OPTIONS = [
@@ -37,21 +39,24 @@ export default function IndustryType() {
     { id:20, value: "Other" },
   ]
 
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Successfully added data");
-      await updateSession({ currentStep: "4" });
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
+  const onSubmit = async () => {
+      setIsSubmitting(true);
+      startTransition(async () => {
+        const data = {
+          industryType: selectedOption.value,
+          currentStep: "4"
+        }
+        const response = await updateBrand(data);
+        if (response?.success) {
+          toast.success(response?.message);
+          await updateSession({ currentStep: "4" });
+          router.refresh();
+        } else {
+          toast.error(response?.message);
+        }
+        setIsSubmitting(false);
       });
-    } finally {
-      setIsSubmitting(false);
     }
-  };
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -95,9 +100,9 @@ export default function IndustryType() {
                 <div className="reg-field reg-d7" style={{ marginTop:6 }}>
                   <ButtonWrapper
                     type="submit"
-                    label={isSubmitting ? <LoadingDots />  : "Next"}
-                    isSubmitting={isSubmitting}
-                    disabled={isSubmitting}
+                    label={isPending ? <LoadingDots />  : "Next"}
+                    isSubmitting={isPending}
+                    disabled={isPending}
                     onClick={() => onSubmit()}
                     className="w-full rounded-[14px] bg-[#0f172a] text-white text-sm font-semibold tracking-wide py-[14px] hover:bg-[#1e293b] transition-all hover:-translate-y-px shadow-[0_4px_20px_rgba(15,23,42,0.18)] hover:shadow-[0_8px_28px_rgba(15,23,42,0.22)] disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 cursor-pointer"
                   />

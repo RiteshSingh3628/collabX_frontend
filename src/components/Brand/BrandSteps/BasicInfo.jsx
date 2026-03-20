@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { brandBasicInfoSchema, DEFAULT_VALUES } from "@/validations/BrandBasicInfoSchema";
 
 import TextInput from "@/components/Custom_UI/TextInput";
@@ -11,13 +11,14 @@ import ButtonWrapper from "@/components/Custom_UI/Button";
 import { TextareaInput } from "@/components/Custom_UI";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useSession } from "next-auth/react";
-import { router } from "better-auth/api";
 import { useRouter } from "next/navigation";
+import { createBrand } from "@/framework/server-action/brand/action";
 
 
 export default function BasicInfo() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { update: updateSession } = useSession();
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const {
@@ -33,23 +34,19 @@ export default function BasicInfo() {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    console.log("I am being called");
-    try {
-      // Simulate API call — replace with real endpoint
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Account created! Welcome to CollabXSphere 🎉", {
-        description: `Signed up as ${data.role === "brand" ? "Brand" : "Influencer"}: ${data.email}`,
-      });
-      await updateSession({ currentStep: "2" });
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
+    startTransition(async () => {
+      data.currentStep = "2";
+      const response = await createBrand(data);
+      if (response?.success) {
+        toast.success(response?.message);
+        await updateSession({ currentStep: "2" });
+        router.refresh();
+      } else {
+        toast.error(response?.message);
+      }
       setIsSubmitting(false);
-    }
-  };
+    });
+  }
 
   return (
     <div className=" min-h-screen flex items-center bg-white justify-center ">
@@ -111,14 +108,14 @@ export default function BasicInfo() {
                 <div className="reg-field reg-d6 reg-wrap">
                     <TextareaInput
                         control={control}
-                        name="brandDescription"
+                        name="description"
                         label="What makes your brand special?"
                         isRequired
                         placeholder="e.g. We are a sustainable fashion brand that uses recycled materials..."
                         autoComplete="brand-description"
                         errors={sharedErrors}
                         disabled={isSubmitting}
-                        aria-invalid={errors.brandDescription ? "true" : "false"}
+                        aria-invalid={errors.description ? "true" : "false"}
                     />
                 </div>
 
@@ -138,4 +135,3 @@ export default function BasicInfo() {
       </div>
   );
 }
-
