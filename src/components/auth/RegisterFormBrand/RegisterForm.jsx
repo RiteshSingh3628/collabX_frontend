@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { brandRegisterSchema } from "@/validations/BrandRegisterSchema";
 import { DEFAULT_VALUES } from "@/validations/BrandRegisterSchema";
@@ -12,10 +12,13 @@ import PasswordInput from "@/components/Custom_UI/PasswordInput";
 import TextInput from "@/components/Custom_UI/TextInput";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import { ArrowRight, Check } from "lucide-react";
-
+import { signUp } from "@/framework/server-action/auth/action";
+import { success } from "zod";
+import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 
 function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [done, setDone] = useState(false);
 
   const {
@@ -31,21 +34,21 @@ function RegisterForm() {
   const sharedErrors = isSubmitted ? errors : {};
 
   const onSubmit = async (data) => {
+    console.log("payload",data)
+    data.role = "brand";
     setIsSubmitting(true);
-    try {
-      // Simulate API call — replace with real endpoint
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Account created! Welcome to CollabXSphere 🎉", {
-        description: `Signed up as ${data.role === "brand" ? "Brand" : "Influencer"}: ${data.email}`,
-      });
-      reset();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
+    startTransition(async () => {
+      const response = await signUp(data);
+      // const response = {success: true, message: "User registered successfully"}
+      if (response?.success) {
+        setDone(true)
+        toast.success(response?.message);
+        reset();
+      } else {
+        toast.error(response?.message);
+      }
       setIsSubmitting(false);
-    }
+    });
   };
 
   return (
@@ -57,7 +60,7 @@ function RegisterForm() {
           <div style={{ position:"absolute", bottom:"-12%", left:"-8%", width:400, height:400, borderRadius:"50%", background:"radial-gradient(circle, #fce7f3 0%, transparent 70%)", opacity:0.45 }} />
         </div>
 
-        <div className="relative w-full max-w-[420px]">
+        <div className="relative w-full max-w-[520px]">
 
           {done ? (
             /* ── success state ── */
@@ -152,20 +155,6 @@ function RegisterForm() {
                   />
                 </div>
 
-                {/* Brand website */}
-                {/* <div className="reg-field reg-d3 reg-wrap">
-                  <TextInput
-                    control={control}
-                    name="website"
-                    label="Brand Website"
-                    placeholder="gymshark.com"
-                    autoComplete="url"
-                    errors={sharedErrors}
-                    disabled={isSubmitting}
-                    aria-invalid={errors.website ? "true" : "false"}
-                  />
-                </div> */}
-
                 {/* Password */}
                 <div className="reg-field reg-d4 reg-wrap">
                   <PasswordInput
@@ -196,29 +185,13 @@ function RegisterForm() {
                   />
                 </div>
 
-                {/* Promotions toggle */}
-                {/* <div
-                  className="reg-field reg-d6"
-                  style={{ display:"flex", alignItems:"center", justifyContent:"space-between", borderRadius:12, border:"1px solid #e2e8f0", background:"#f8fafc", padding:"11px 16px" }}
-                >
-                  <span style={{ fontSize:"0.72rem", fontWeight:600, letterSpacing:"0.07em", textTransform:"uppercase", color:"#94a3b8" }}>
-                    Offers &amp; promotions
-                  </span>
-                  <label style={{ position:"relative", display:"inline-flex", alignItems:"center", cursor:"pointer" }}>
-                    <input className="reg-toggle-input" type="checkbox" style={{ position:"absolute", opacity:0, width:0, height:0 }} />
-                    <div className="reg-toggle-track">
-                      <div className="reg-toggle-thumb" />
-                    </div>
-                  </label>
-                </div> */}
-
                 {/* Submit — reusing ButtonWrapper */}
                 <div className="reg-field reg-d7" style={{ marginTop:6 }}>
                   <ButtonWrapper
                     type="submit"
-                    label={isSubmitting ? "Creating account…" : "Register as a Brand"}
+                    label={isSubmitting ? <LoadingDots/> : "Register as a Brand"}
                     isSubmitting={isSubmitting}
-                    disabled={isSubmitting}
+                    disabled={isPending}
                     className="w-full rounded-[14px] bg-[#0f172a] text-white text-sm font-semibold tracking-wide py-[14px] hover:bg-[#1e293b] transition-all hover:-translate-y-px shadow-[0_4px_20px_rgba(15,23,42,0.18)] hover:shadow-[0_8px_28px_rgba(15,23,42,0.22)] disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 cursor-pointer"
                   />
                 </div>
@@ -227,7 +200,7 @@ function RegisterForm() {
               {/* footer links */}
               <p style={{ marginTop:22, textAlign:"center", fontSize:"0.8rem", color:"#94a3b8" }}>
                 Already have an account?{" "}
-                <Link href="/auth/brand/login" style={{ color:"#0f172a", fontWeight:500 }}>
+                <Link href="/auth/login" style={{ color:"#0f172a", fontWeight:500 }}>
                   Login here
                 </Link>
               </p>

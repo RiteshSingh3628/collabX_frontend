@@ -59,13 +59,13 @@ export default function Navbar() {
         {/* CTA buttons */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="#"
+            href="/auth/login"
             className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors font-body"
           >
             Login
           </a>
           <motion.a
-            href="#"
+            href="/auth/brand/register"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             className="px-5 py-2.5 bg-[--primary] text-blue-600 border border-slate-200 text-sm font-semibold rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-md shadow-blue-200 font-display"

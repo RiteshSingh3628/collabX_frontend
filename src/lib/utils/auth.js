@@ -4,32 +4,11 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import URLS from "@/constants/urls";
 import apiClient from "./apiClient";
+import { login } from "@/framework/server-action/auth/action";
 
 
 export const authOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-        },
-      },
-      httpOptions: {
-        timeout: 10000,
-      },
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      httpOptions: {
-        timeout: 10000,
-      },
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -46,26 +25,23 @@ export const authOptions = {
         }
 
         try {
-          const res = await apiClient(URLS.AUTH.LOGIN, {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
-          console.log(res);
+          const res = await login(credentials);
 
           if (res.success && res.data) {
+            const userData = res.data.user;
+            const tokenData = res.data;
             return {
-              id: res.data.user.id,
-              email: res.data.user.email,
-              fullName: res.data.user.fullName,
-              active: res.data.user.active,
-              token: res.data.token,
-              tokenExpiryTime: res.data.tokenExpiryTime,
-              refreshToken: res.data.refreshToken,
-              refreshTokenExpiryTime: res.data.refreshTokenExpiryTime,
+              id: userData._id,
+              email: userData.email,
+              fullName: userData.firstName + " " + userData.lastName,
+              active: userData.status,
+              token: tokenData.token,
+              role: userData.userType,
+              currentStep: userData.currentStep || 1,
+              isProfileCompleted: userData.isProfileCompleted || false,
+              tokenExpiryTime: tokenData.tokenExpiryTime,
+              refreshToken: tokenData.refreshToken,
+              refreshTokenExpiryTime: tokenData.refreshTokenExpiryTime,
             };
           }
           return null;
@@ -77,14 +53,22 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      // First login
+    async jwt({ token, user, trigger, session }) {
+      // trigger when update() is called
+      if (trigger === "update" && session) {
+        token.user = { ...token.user, ...session };
+      }
+
       if (user) {
         return {
           user: {
             id: user.id,
             email: user.email,
             active: user.active,
+            fullName: user.fullName,
+            role: user.role,
+            currentStep: user.currentStep,
+            isProfileCompleted: user.isProfileCompleted,
           },
           accessToken: user.token,
           accessTokenExpiry: user.tokenExpiryTime,

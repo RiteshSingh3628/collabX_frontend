@@ -1,22 +1,17 @@
 "use client";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useState } from "react";
-import { brandRegisterSchema } from "@/validations/BrandRegisterSchema";
-import { DEFAULT_VALUES } from "@/validations/BrandRegisterSchema";
-
-import TextInput from "@/components/Custom_UI/TextInput";
 import ButtonWrapper from "@/components/Custom_UI/Button";
-import { SelectInput, TextareaInput } from "@/components/Custom_UI";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 
 export default function BusinessType() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-
+  const { update: updateSession } = useSession();
+  const router = useRouter();
 
   const OPTIONS = [
     { value: "e-commerce", description: "Your business sells products online and delivers across the country." },
@@ -35,7 +30,8 @@ export default function BusinessType() {
       toast.success("Account created! Welcome to CollabXSphere 🎉", {
         description: `Signed up as ${data.role === "brand" ? "Brand" : "Influencer"}: ${data.email}`,
       });
-      reset();
+      await updateSession({ currentStep: "3" });
+      router.refresh();
     } catch {
       toast.error("Something went wrong", {
         description: "Please try again or contact support.",
@@ -89,6 +85,7 @@ export default function BusinessType() {
                     label={isSubmitting ? <LoadingDots />  : "Next"}
                     isSubmitting={isSubmitting}
                     disabled={isSubmitting}
+                    onClick={() => onSubmit()}
                     className="w-full rounded-[14px] bg-[#0f172a] text-white text-sm font-semibold tracking-wide py-[14px] hover:bg-[#1e293b] transition-all hover:-translate-y-px shadow-[0_4px_20px_rgba(15,23,42,0.18)] hover:shadow-[0_8px_28px_rgba(15,23,42,0.22)] disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 cursor-pointer"
                   />
                 </div>
