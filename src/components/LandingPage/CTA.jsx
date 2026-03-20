@@ -38,7 +38,7 @@ export default function CTA() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <motion.a
-              href="#"
+              href="/auth/brand/register"
               whileHover={{ scale: 1.05, boxShadow: '0 25px 70px rgba(0,0,0,0.2)' }}
               whileTap={{ scale: 0.97 }}
               className="group flex items-center gap-2 px-10 py-5 bg-white text-blue-600 font-display font-bold text-lg rounded-2xl shadow-xl hover:bg-slate-50 transition-all"
@@ -48,7 +48,7 @@ export default function CTA() {
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </motion.a>
             <motion.a
-              href="#"
+              href="/auth/influencer/register"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
               className="flex items-center gap-2 px-10 py-5 bg-white/15 text-white font-display font-semibold text-lg rounded-2xl hover:bg-white/20 transition-all border border-white/20"
