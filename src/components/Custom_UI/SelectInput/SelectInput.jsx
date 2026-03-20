@@ -1,6 +1,6 @@
 "use client";
 
-import { InlineError } from "@/components/talent-ui";
+import InlineError from "@/components/Custom_UI/InlineError";
 import {
   Select,
   SelectContent,

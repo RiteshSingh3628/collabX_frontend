@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { InlineError } from "@/components/talent-ui";
+import InlineError from "@/components/Custom_UI/InlineError";
 
 export default function DateInput({
   control,
