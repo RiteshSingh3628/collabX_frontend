@@ -30,23 +30,25 @@ export function getProxyRedirect(requestUrl, token) {
     return new URL(ROUTES.LANDING, requestUrl);
   }
 
+  const isProfileCompleted = token?.user?.isProfileCompleted
+  const rawRole = token?.user?.role
+
   // 2. User IS Logged In, but Profile is NOT completed
-  if (token && token.isProfileCompleted !== true) {
+  if (token && isProfileCompleted !== true) {
     // Determine onboarding path based on role (assumes "brand" or "influencer")
-    const role = token.role?.toLowerCase() || "brand";
-    const onboardingPath = `/onboarding/${role}`;
+    const role = rawRole?.toLowerCase() || "brand";
     
     // If they are already on their designated onboarding path, allow it
-    if (pathname.startsWith(onboardingPath)) {
+    if (pathname.startsWith(`/onboarding/${role}`)) {
       return null;
     }
 
     // Force redirection to their onboarding path
-    return new URL(onboardingPath, requestUrl);
+    return new URL(`/onboarding/${role}`, requestUrl);
   }
 
   // 3. User IS Logged In and Profile IS completed
-  if (token && token.isProfileCompleted === true) {
+  if (token && isProfileCompleted === true) {
     // Redirect away from landing, auth, or onboarding routes to Homepage
     if (
       pathname === ROUTES.LANDING ||
@@ -56,7 +58,6 @@ export function getProxyRedirect(requestUrl, token) {
       return new URL(ROUTES.HOME, requestUrl);
     }
     
-    // Allow access to all other paths (e.g., /home, protected routes)
     return null;
   }
 
