@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useState } from "react";
+import {  useState, useTransition } from "react";
 import Link from "next/link";
 import { brandRegisterSchema } from "@/validations/BrandRegisterSchema";
 import { DEFAULT_VALUES } from "@/validations/BrandRegisterSchema";
@@ -12,11 +12,13 @@ import PasswordInput from "@/components/Custom_UI/PasswordInput";
 import TextInput from "@/components/Custom_UI/TextInput";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import { ArrowRight, Check } from "lucide-react";
+import { signUp } from "@/framework/server-action/auth/action";
 
 
 function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const {
     handleSubmit,
@@ -31,21 +33,20 @@ function RegisterForm() {
   const sharedErrors = isSubmitted ? errors : {};
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      // Simulate API call — replace with real endpoint
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Account created! Welcome to CollabXSphere 🎉", {
-        description: `Signed up as ${data.role === "brand" ? "Brand" : "Influencer"}: ${data.email}`,
+      console.log("payload",data)
+      data.role = "influencer";
+      setIsSubmitting(true);
+      startTransition(async () => {
+        const response = await signUp(data);
+        if (response?.success) {
+          setDone(true)
+          toast.success(response?.message);
+          reset();
+        } else {
+          toast.error(response?.message);
+        }
+        setIsSubmitting(false);
       });
-      reset();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
@@ -72,7 +73,7 @@ function RegisterForm() {
                 Welcome to CollabXSphere. Your brand account is ready to go.
               </p>
               <Link
-                href="/auth/brand/login"
+                href="/auth/login"
                 style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:28, fontSize:"0.875rem", fontWeight:600, color:"#0f172a" }}
               >
                 Go to login <ArrowRight size={14} />
@@ -80,7 +81,6 @@ function RegisterForm() {
             </div>
 
           ) : (
-            /* ── form card ── */
             <div className="rounded-3xl bg-white border border-slate-100 shadow-lg px-10 py-11">
 
               {/* header */}
@@ -117,7 +117,7 @@ function RegisterForm() {
                       placeholder="Jane"
                       autoComplete="given-name"
                       errors={sharedErrors}
-                      disabled={isSubmitting}
+                      disabled={isPending}
                       aria-invalid={errors.firstName ? "true" : "false"}
                     />
                   </div>
