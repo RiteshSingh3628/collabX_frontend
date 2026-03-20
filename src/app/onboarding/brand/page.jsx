@@ -4,11 +4,10 @@ import { Onboarding } from "@/components/Brand/Onboarding/Onboarding";
 
 export default async function BrandOnboardingPage() {
     const session = await getServerSession(authOptions);
-    console.log("session",session);
     const stepsCompleted = session?.user?.currentStep;
 
     return (
-        <Onboarding stepsCompleted={2}/>
+        <Onboarding stepsCompleted={stepsCompleted}/>
     )
 
 }

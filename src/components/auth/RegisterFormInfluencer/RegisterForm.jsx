@@ -57,7 +57,7 @@ function RegisterForm() {
           <div style={{ position:"absolute", bottom:"-12%", left:"-8%", width:400, height:400, borderRadius:"50%", background:"radial-gradient(circle, #fce7f3 0%, transparent 70%)", opacity:0.45 }} />
         </div>
 
-        <div className="relative w-full max-w-[420px]">
+        <div className="relative w-full max-w-[520px]">
 
           {done ? (
             /* ── success state ── */
