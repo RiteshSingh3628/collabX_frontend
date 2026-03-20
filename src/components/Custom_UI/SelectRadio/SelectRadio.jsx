@@ -1,7 +1,7 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { InlineError } from '@/components/talent-ui';
+import InlineError from "@/components/Custom_UI/InlineError";
 
 const SelectRadio = ({
   className = '',

@@ -3,7 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import URLS from "@/constants/urls";
-import { apiClient } from "./apiClient";
+import apiClient from "./apiClient";
+
 
 export const authOptions = {
   providers: [
@@ -112,7 +113,7 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
   },
