@@ -1,5 +1,5 @@
 "use client";
-import { IdentifyYourself, ContentType, PreferredCompanies, InterestedBrands } from "@/components/Creator/CreatorSteps";
+import { IdentifyYourself, ContentType, PreferredCompanies, InterestedBrands, ConnectInstagram } from "@/components/Creator/CreatorSteps";
 
 const STEP_CONFIG = {
     1: {
@@ -17,6 +17,10 @@ const STEP_CONFIG = {
     4: {
         title: "Interested Brands",
         component: () => <InterestedBrands />
+    },
+    5: {
+        title: "Connect Instagram",
+        component: () => <ConnectInstagram />
     }
 };
 
