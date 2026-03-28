@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  allowedDevOrigins: ["nocuously-unsavage-billye.ngrok-free.dev"],
 };
 
 export default nextConfig;
