@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
+import { connectInstagram } from "@/framework/server-action/connect-platform/action";
 
 function getCookie(name) {
   if (typeof document === "undefined") return null;
@@ -23,6 +24,8 @@ const InstagramIcon = () => (
 );
 
 export default function ConnectInstagram() {
+   const { data: session, status } = useSession();
+  
   const [igProfile] = useState(() => {
     const profileCookie = getCookie("ig_profile");
     if (profileCookie) {
@@ -65,6 +68,13 @@ export default function ConnectInstagram() {
       setIsFinishing(false);
     }
   };
+
+  const handleConnectInstagram = async () =>{
+    console.log("Initiating Instagram connection...");
+    const response = await connectInstagram(session?.accessToken);
+    console.log("Connect Instagram response:", response);
+    
+  }
 
   return (
     <div className="min-h-screen flex items-center bg-white justify-center">
@@ -117,20 +127,35 @@ export default function ConnectInstagram() {
             </div>
           ) : (
             // Connect button
-            <a
-              href="/api/instagram/connect"
+            // <a
+            //   href="/api/instagram/connect"
+            //   style={{
+            //     display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+            //     width: "100%", padding: "14px 20px", borderRadius: 14,
+            //     background: "linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
+            //     color: "white", fontWeight: 600, fontSize: "0.9rem",
+            //     textDecoration: "none", marginBottom: 24,
+            //     boxShadow: "0 4px 20px rgba(220, 39, 67, 0.3)",
+            //   }}
+            // >
+            //   <InstagramIcon />
+            //   Connect Instagram
+            // </a>
+            <button
+              type="button"
+              onClick={handleConnectInstagram}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
                 width: "100%", padding: "14px 20px", borderRadius: 14,
                 background: "linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
                 color: "white", fontWeight: 600, fontSize: "0.9rem",
-                textDecoration: "none", marginBottom: 24,
+                border: "none", cursor: "pointer", marginBottom: 24,
                 boxShadow: "0 4px 20px rgba(220, 39, 67, 0.3)",
               }}
             >
               <InstagramIcon />
               Connect Instagram
-            </a>
+            </button>
           )}
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
