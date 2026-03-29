@@ -194,7 +194,7 @@ function RegisterForm() {
               {/* footer links */}
               <p style={{ marginTop:22, textAlign:"center", fontSize:"0.8rem", color:"#94a3b8" }}>
                 Already have an account?{" "}
-                <Link href="/auth/brand/login" style={{ color:"#0f172a", fontWeight:500 }}>
+                <Link href="/auth/login" style={{ color:"#0f172a", fontWeight:500 }}>
                   Login here
                 </Link>
               </p>
