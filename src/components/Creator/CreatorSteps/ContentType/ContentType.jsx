@@ -1,17 +1,19 @@
 "use client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import OptionCard from "@/components/common/OptionCard";
+import { updateCreatorProfile } from "@/framework/server-action/creator/action";
 
 export default function ContentType() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { update: updateSession } = useSession();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const OPTIONS = [
     { id: 1, value: "Beauty & Care" },
@@ -35,21 +37,21 @@ export default function ContentType() {
   ];
 
   const onSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Successfully added data");
-      console.log("selected option", selectedOptions)
-      await updateSession({ currentStep: "3" }); 
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
+      setIsSubmitting(true);
+      startTransition(async () => {
+        const data = { ContentType: selectedOptions.map(o => o.value) };
+        data.currentStep = 3;
+        const response = await updateCreatorProfile(data);
+        if (response?.success) {
+          toast.success(response?.message);
+          await updateSession({ currentStep: 3 });
+          router.refresh();
+        } else {
+          toast.error(response?.message);
+        }
+        setIsSubmitting(false);
       });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    };
 
   const handleOptionSelect = (option) => {
     if (selectedOptions.find(o => o.id === option.id)) {
