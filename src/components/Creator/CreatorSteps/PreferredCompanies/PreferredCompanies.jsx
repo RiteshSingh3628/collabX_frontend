@@ -1,17 +1,19 @@
 "use client";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import OptionCard from "@/components/common/OptionCard";
+import { updateCreatorProfile } from "@/framework/server-action/creator/action";
 
 export default function PreferredCompanies() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const { update: updateSession } = useSession();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const OPTIONS = [
     { id: 1, value: "E-Commerce" },
@@ -24,18 +26,19 @@ export default function PreferredCompanies() {
 
   const onSubmit = async () => {
     setIsSubmitting(true);
-    try {
-      await new Promise((res) => setTimeout(res, 2000));
-      toast.success("Successfully added data");
-      await updateSession({ currentStep: "4" }); 
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
+    startTransition(async () => {
+      const data = { preferredCompanies: selectedOptions.map(o => o.value) };
+      data.currentStep = 4;
+      const response = await updateCreatorProfile(data);
+      if (response?.success) {
+        toast.success(response?.message);
+        await updateSession({ currentStep: 4 });
+        router.refresh();
+      } else {
+        toast.error(response?.message);
+      }
       setIsSubmitting(false);
-    }
+    });
   };
 
   const handleOptionSelect = (option) => {
@@ -103,7 +106,7 @@ export default function PreferredCompanies() {
                 type="button"
                 label={isSubmitting ? <LoadingDots /> : "Next"}
                 isSubmitting={isSubmitting}
-                disabled={isSubmitting || selectedOptions.length === 0}
+                disabled={isPending || selectedOptions.length === 0}
                 onClick={onSubmit}
                 className="w-full rounded-[14px] bg-[#64748b] text-white text-sm font-semibold tracking-wide py-[14px] hover:bg-[#475569] transition-all hover:-translate-y-px shadow-[0_4px_20px_rgba(15,23,42,0.18)] hover:shadow-[0_8px_28px_rgba(15,23,42,0.22)] disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 cursor-pointer"
               />

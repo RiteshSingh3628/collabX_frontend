@@ -11,8 +11,8 @@ const URLS = {
         UPDATE: `${BASE_URL}api/brands/update`,
     },
     CREATOR:{
-        CREATE: `${BASE_URL}api/influencers/create`,
-        UPDATE: `${BASE_URL}api/influencers/update`,
+        CREATE: `${BASE_URL}api/creators/create`,
+        UPDATE: `${BASE_URL}api/creators/update`,
     }
 }
 
