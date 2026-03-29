@@ -13,6 +13,9 @@ const URLS = {
     CREATOR:{
         CREATE: `${BASE_URL}api/influencers/create`,
         UPDATE: `${BASE_URL}api/influencers/update`,
+    },
+    PLATFORM:{
+        CONNECT_INSTAGRAM: `${BASE_URL}api/social-accounts/connect/instagram`,
     }
 }
 
