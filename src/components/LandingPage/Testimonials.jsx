@@ -114,7 +114,10 @@ export default function Testimonials() {
                   className="w-11 h-11 rounded-2xl overflow-hidden shrink-0 border-2"
                   style={{ borderColor: 'rgba(255, 255, 255, 0.25)' }}
                 >
-                  <Image src={testi.avatar} alt={testi.author} className="w-full h-full object-cover object-top" fill/>
+                  <Image src={testi.avatar} alt={testi.author} className="w-full h-full object-cover object-top" sizes="(max-width: 768px) 100vw, 
+         (max-width: 1200px) 50vw, 
+         33vw"
+                    fill />
                 </div>
                 <div>
                   <div style={{ fontSize: '14px', fontWeight: 500, color: 'white' }}>{testi.author}</div>
