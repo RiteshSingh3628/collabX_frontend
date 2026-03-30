@@ -1,24 +1,66 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { Zap, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Analytics', href: '#analytics' },
-  { label: 'AI Matching', href: '#ai-matching' },
+  { label: 'How it works', href: '#how' },
+  { label: 'For creators', href: '#creators' },
+  { label: 'For brands', href: '#brands' },
+  { label: 'Campaigns', href: '#campaigns' },
 ]
+
+function NavLink({ link, scrolled }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <a
+        href={link.href}
+        style={{
+          fontSize: '0.7rem',
+          fontWeight: 600,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: scrolled
+            ? (hovered ? '#d43a2a' : '#0a0a0a')
+            : (hovered ? '#c9a84c' : 'rgba(255,255,255,0.9)'),
+          transition: 'color 0.2s ease',
+          textDecoration: 'none',
+        }}
+      >
+        {link.label}
+      </a>
+      <span
+        style={{
+          position: 'absolute',
+          bottom: '-4px',
+          left: 0,
+          height: '1.5px',
+          width: hovered ? '100%' : '0%',
+          background: scrolled ? '#d43a2a' : '#c9a84c',
+          transition: 'width 0.25s ease',
+          display: 'block',
+          borderRadius: '2px',
+        }}
+      />
+    </div>
+  )
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [loginHovered, setLoginHovered] = useState(false)
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 30)
+    setScrolled(latest > 60)
   })
 
   return (
@@ -26,33 +68,46 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'py-3 bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm'
-          : 'py-5 bg-transparent'
-      }`}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        padding: scrolled ? '12px 0' : '20px 0',
+        background: scrolled ? 'rgba(247, 244, 239, 0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(10, 10, 10, 0.1)' : 'none',
+        transition: 'all 0.4s ease',
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-12 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-[--primary] flex items-center justify-center group-hover:scale-110 transition-transform shadow-md shadow-blue-200">
-            <Zap size={16} className="text-white fill-white" />
+        <a href="#" className="flex items-center gap-2 group" style={{ textDecoration: 'none' }}>
+          <div
+            className="w-7 h-7 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform"
+            style={{ background: '#d43a2a' }}
+          >
+            <span className="w-2 h-2 rounded-full bg-white block" />
           </div>
-          <span className="font-display font-bold text-lg text-slate-900 tracking-tight">
-            collab<span className="text-[--primary]">.</span>
+          <span
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '1.2rem',
+              fontWeight: 400,
+              letterSpacing: '0.05em',
+              color: scrolled ? '#0a0a0a' : '#ffffff',
+              transition: 'color 0.4s ease',
+            }}
+          >
+            CollabXSphere
           </span>
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="px-4 py-2 text-sm text-slate-500 hover:text-slate-900 font-body font-medium transition-colors rounded-lg hover:bg-slate-100"
-            >
-              {link.label}
-            </a>
+            <NavLink key={link.label} link={link} scrolled={scrolled} />
           ))}
         </nav>
 
@@ -60,15 +115,48 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="/auth/login"
-            className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors font-body"
+            onMouseEnter={() => setLoginHovered(true)}
+            onMouseLeave={() => setLoginHovered(false)}
+            style={{
+              padding: '7px 20px',
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              borderRadius: '999px',
+              border: scrolled
+                ? '1.5px solid rgba(10,10,10,0.25)'
+                : '1.5px solid rgba(255,255,255,0.7)',
+              color: scrolled
+                ? (loginHovered ? '#d43a2a' : '#0a0a0a')
+                : (loginHovered ? '#c9a84c' : '#ffffff'),
+              background: loginHovered
+                ? (scrolled ? '#ede8df' : 'rgba(255,255,255,0.12)')
+                : 'transparent',
+              transition: 'all 0.2s ease',
+              textDecoration: 'none',
+              display: 'inline-block',
+            }}
           >
             Login
           </a>
           <motion.a
-            href="/auth/brand/register"
-            whileHover={{ scale: 1.03 }}
+            href="/auth/login"
+            whileHover={{ scale: 1.04, opacity: 0.9 }}
             whileTap={{ scale: 0.97 }}
-            className="px-5 py-2.5 bg-[--primary] text-blue-600 border border-slate-200 text-sm font-semibold rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-md shadow-blue-200 font-display"
+            style={{
+              padding: '8px 20px',
+              background: '#d43a2a',
+              color: '#ffffff',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              borderRadius: '999px',
+              textDecoration: 'none',
+              display: 'inline-block',
+              boxShadow: '0 2px 12px rgba(212, 58, 42, 0.35)',
+            }}
           >
             Get Started
           </motion.a>
@@ -77,7 +165,14 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-slate-500 hover:text-slate-900 transition-colors"
+          style={{
+            color: scrolled ? '#0a0a0a' : '#ffffff',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'color 0.3s ease',
+          }}
+          className="md:hidden"
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -89,21 +184,73 @@ export default function Navbar() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="md:hidden bg-white border-t border-slate-200 px-6 py-6 flex flex-col gap-3 shadow-lg"
+          style={{
+            background: '#f7f4ef',
+            borderTop: '1px solid rgba(10,10,10,0.1)',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
+          }}
+          className="md:hidden"
         >
           {navLinks.map(link => (
             <a
               key={link.label}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="text-sm text-slate-600 hover:text-slate-900 py-2 font-body transition-colors"
+              style={{
+                fontSize: '0.7rem',
+                color: '#0a0a0a',
+                padding: '8px 0',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                borderBottom: '1px solid rgba(10,10,10,0.06)',
+              }}
             >
               {link.label}
             </a>
           ))}
-          <div className="flex gap-3 pt-3 border-t border-slate-200">
-            <a href="#" className="flex-1 text-center py-2.5 text-sm text-slate-600 border border-slate-200 rounded-xl font-body hover:border-slate-300 transition-colors">Login</a>
-            <a href="#" className="flex-1 text-center py-2.5 text-sm bg-[--primary] text-white font-semibold rounded-xl font-display hover:bg-blue-600 transition-colors">Get Started</a>
+          <div style={{ display: 'flex', gap: '12px', paddingTop: '12px' }}>
+            <a
+              href="/auth/login"
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                padding: '8px',
+                fontSize: '0.7rem',
+                color: '#0a0a0a',
+                border: '1.5px solid rgba(10,10,10,0.2)',
+                borderRadius: '999px',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+              }}
+            >
+              Login
+            </a>
+            <a
+              href="/auth/login"
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                padding: '8px',
+                fontSize: '0.7rem',
+                background: '#d43a2a',
+                color: '#ffffff',
+                borderRadius: '999px',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+              }}
+            >
+              Get Started
+            </a>
           </div>
         </motion.div>
       )}

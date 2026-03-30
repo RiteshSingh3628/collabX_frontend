@@ -126,21 +126,6 @@ export default function ConnectInstagram() {
               </span>
             </div>
           ) : (
-            // Connect button
-            // <a
-            //   href="/api/instagram/connect"
-            //   style={{
-            //     display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-            //     width: "100%", padding: "14px 20px", borderRadius: 14,
-            //     background: "linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
-            //     color: "white", fontWeight: 600, fontSize: "0.9rem",
-            //     textDecoration: "none", marginBottom: 24,
-            //     boxShadow: "0 4px 20px rgba(220, 39, 67, 0.3)",
-            //   }}
-            // >
-            //   <InstagramIcon />
-            //   Connect Instagram
-            // </a>
             <button
               type="button"
               onClick={handleConnectInstagram}
