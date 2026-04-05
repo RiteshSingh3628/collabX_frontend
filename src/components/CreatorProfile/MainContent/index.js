@@ -1,4 +1,7 @@
 export { default as CampaignFitScore } from './CampaignFitScore'
+export { default as OverallAnalytics } from './OverallAnalytics'
+export { default as PlatformSection } from './PlatformSection'
+export { default as PastWorksReviews } from './PastWorksReviews'
 export { default as RecentContent } from './RecentContent'
 export { default as LikesPerPostChart } from './LikesPerPostChart'
 export { default as ContactStrip } from './ContactStrip'

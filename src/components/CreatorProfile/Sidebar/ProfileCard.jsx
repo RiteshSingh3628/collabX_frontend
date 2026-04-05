@@ -1,8 +1,17 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { BadgeCheck, MapPin, Instagram } from 'lucide-react'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import {
+  BadgeCheck,
+  MapPin,
+  Clock,
+  MessageSquare,
+  DollarSign,
+  Calendar,
+  Users,
+} from 'lucide-react'
+
+const FIELD_ICONS = { MapPin, Clock, MessageSquare, DollarSign, Calendar, Users }
 
 export default function ProfileCard({ profile, onInvite }) {
   return (
@@ -10,99 +19,190 @@ export default function ProfileCard({ profile, onInvite }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white border border-black/8 rounded-[20px] overflow-hidden"
+      style={{
+        background: '#fff',
+        border: '1px solid var(--border)',
+        borderRadius: 18,
+        overflow: 'hidden',
+      }}
     >
-      {/* Cover */}
-      <div className="h-[100px] relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#0a0a0a 0%,#1e1a14 50%,#2d2416 100%)' }}>
-        {/* Dot pattern */}
+      <div style={{ padding: 20 }}>
+        {/* Name + verified */}
         <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px)',
-            backgroundSize: '14px 14px',
-          }}
-        />
-        {/* Glow */}
-        <div
-          className="absolute -bottom-[30px] -right-[30px] w-[120px] h-[120px] rounded-full"
-          style={{ background: 'radial-gradient(circle,rgba(220,39,67,0.18),transparent 70%)' }}
-        />
-
-        {/* Avatar */}
-        <div className="absolute -bottom-7 left-[22px]">
-          <Avatar className="w-[72px] h-[72px] rounded-[18px] border-[3px] border-white shadow-md">
-            <AvatarImage
-              src={profile.avatar}
-              alt={profile.name}
-              className="object-cover object-top"
-            />
-            <AvatarFallback
-              className="rounded-[18px] text-[28px] font-semibold text-white"
-              style={{ background: 'linear-gradient(135deg,#d43a2a,#8a1a10)', fontFamily: 'var(--serif)' }}
-            >
-              {profile.name.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-
-          {/* Platform badge */}
-          <div
-            className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-[6px] flex items-center justify-center border-2 border-white"
-            style={{ background: 'linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)' }}
-          >
-            <Instagram size={11} className="text-white" />
-          </div>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="pt-10 px-[22px] pb-[22px]">
-        {/* Name row */}
-        <div className="flex items-start justify-between mb-[3px]">
-          <div className="flex items-center gap-1.5 text-[19px] font-semibold" style={{ color: 'var(--ink)' }}>
-            {profile.name}
-            {profile.verified && (
-              <span className="w-[17px] h-[17px] rounded-full bg-[#1a4fd4] flex items-center justify-center shrink-0">
-                <BadgeCheck size={10} className="text-white" />
-              </span>
-            )}
-          </div>
-          <span
-            className="text-[11px] font-semibold px-2.5 py-[3px] rounded-full shrink-0 mt-[3px]"
-            style={{ background: '#edfaf3', color: '#1a7a45' }}
-          >
-            {profile.matchLabel}
+          className="flex items-center"
+          style={{ gap: 6, marginBottom: 3 }}
+        >
+          <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
+            {profile?.name}
           </span>
+          {profile?.verified && (
+            <span
+              className="flex items-center justify-center shrink-0"
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: '50%',
+                background: '#1a4fd4',
+              }}
+            >
+              <BadgeCheck size={8} color="#fff" />
+            </span>
+          )}
         </div>
 
         {/* Handle */}
-        <div className="text-[13px] mb-2.5" style={{ color: 'var(--ink4, #ababab)' }}>
-          {profile.handle} &middot; {profile.platform}
+        <div style={{ fontSize: '12.5px', color: 'var(--ink4, #ababab)', marginBottom: 14 }}>
+          {profile?.handle} &middot; {profile?.platform}
         </div>
 
-        {/* Bio */}
+        {/* About */}
         <div
-          className="text-[13.5px] font-light leading-[1.65] whitespace-pre-line mb-4"
-          style={{ color: 'var(--ink2)' }}
+          style={{
+            fontSize: '10.5px',
+            fontWeight: 500,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--ink4, #ababab)',
+            marginBottom: 14,
+          }}
         >
-          {profile.bio}
+          About
+        </div>
+        <div
+          style={{
+            fontSize: '13.5px',
+            fontWeight: 300,
+            lineHeight: 1.7,
+            color: 'var(--ink2)',
+            whiteSpace: 'pre-line',
+            padding: 14,
+            background: 'var(--surface, #faf8f5)',
+            borderRadius: 10,
+            border: '1px solid var(--border)',
+            marginBottom: 14,
+          }}
+        >
+          {profile?.bio}
         </div>
 
-        {/* Location */}
-        <div className="flex items-center gap-1.5 text-[12.5px] mb-4" style={{ color: 'var(--ink3)' }}>
-          <MapPin size={13} className="opacity-50" />
-          {profile.location} &middot; {profile.role}
+        {/* Creator info */}
+        <div
+          style={{
+            fontSize: '10.5px',
+            fontWeight: 500,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--ink4, #ababab)',
+            marginBottom: 14,
+          }}
+        >
+          Creator info
+        </div>
+        <div
+          className="flex flex-col"
+          style={{
+            border: '1px solid var(--border)',
+            borderRadius: 10,
+            overflow: 'hidden',
+            gap: 0,
+          }}
+        >
+          {profile?.creatorInfo?.map((field, i) => {
+            const Icon = FIELD_ICONS[field.icon]
+            return (
+              <div
+                key={i}
+                className="flex items-center"
+                style={{
+                  padding: '9px 13px',
+                  borderBottom:
+                    i < profile.creatorInfo.length - 1
+                      ? '1px solid var(--border)'
+                      : 'none',
+                  gap: 10,
+                }}
+              >
+                <div
+                  className="flex items-center justify-center shrink-0"
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 7,
+                    background: 'var(--surface, #faf8f5)',
+                  }}
+                >
+                  {Icon && <Icon size={13} style={{ opacity: 0.5 }} />}
+                </div>
+                <span
+                  className="shrink-0"
+                  style={{
+                    fontSize: '11.5px',
+                    color: 'var(--ink4, #ababab)',
+                    minWidth: 68,
+                  }}
+                >
+                  {field.key}
+                </span>
+                {field.tag ? (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      padding: '2px 9px',
+                      borderRadius: 100,
+                      background:
+                        field.tagColor === 'green'
+                          ? '#edfaf3'
+                          : 'rgba(212,58,42,0.07)',
+                      color:
+                        field.tagColor === 'green' ? '#1a7a45' : '#d43a2a',
+                    }}
+                  >
+                    {field.value}
+                  </span>
+                ) : (
+                  <span
+                    className="flex-1"
+                    style={{
+                      fontSize: 13,
+                      fontWeight: field.bold ? 600 : 500,
+                      color: field.muted
+                        ? 'var(--ink4, #ababab)'
+                        : field.valueColor || 'var(--ink2)',
+                    }}
+                  >
+                    {field.value}
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
 
-        {/* Niche tags */}
-        <div className="flex flex-wrap gap-1.5 mb-[18px]">
-          {profile.niches.map((niche) => (
+        {/* Content niches */}
+        <div
+          style={{
+            fontSize: '10.5px',
+            fontWeight: 500,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--ink4, #ababab)',
+            marginTop: 16,
+            marginBottom: 14,
+          }}
+        >
+          Content niches
+        </div>
+        <div className="flex flex-wrap" style={{ gap: 5, marginBottom: 16 }}>
+          {profile?.niches?.map((niche) => (
             <span
               key={niche}
-              className="text-[11.5px] px-3 py-1 rounded-full"
               style={{
+                fontSize: '11.5px',
+                padding: '4px 11px',
+                borderRadius: 100,
                 background: 'rgba(212,58,42,0.07)',
-                color: 'var(--red)',
-                border: '1px solid rgba(212,58,42,0.15)',
+                color: '#d43a2a',
+                border: '1px solid rgba(212,58,42,0.14)',
               }}
             >
               {niche}
@@ -111,18 +211,58 @@ export default function ProfileCard({ profile, onInvite }) {
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col" style={{ gap: 8 }}>
           <button
             onClick={onInvite}
-            className="w-full text-sm font-semibold tracking-[0.02em] py-3 rounded-full bg-[--ink] text-white border-none cursor-pointer transition-all duration-200 hover:bg-[#2a2a2a] hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+            style={{
+              width: '100%',
+              fontSize: 14,
+              fontWeight: 600,
+              padding: '11px 0',
+              borderRadius: 100,
+              border: 'none',
+              background: 'var(--ink)',
+              color: '#fff',
+              cursor: 'pointer',
+              fontFamily: 'var(--sans)',
+              transition: 'all 0.22s',
+            }}
           >
             Invite to campaign &rarr;
           </button>
-          <div className="flex gap-2">
-            <button className="flex-1 text-[13px] font-medium py-2.5 rounded-full border border-black/15 bg-transparent cursor-pointer transition-all duration-200 hover:bg-[--cream]" style={{ color: 'var(--ink2)' }}>
+          <div className="flex" style={{ gap: 8 }}>
+            <button
+              style={{
+                flex: 1,
+                fontSize: 13,
+                fontWeight: 500,
+                padding: '9px 0',
+                borderRadius: 100,
+                border: '1px solid rgba(10,10,10,0.15)',
+                background: 'none',
+                color: 'var(--ink2)',
+                cursor: 'pointer',
+                fontFamily: 'var(--sans)',
+                transition: 'all 0.18s',
+              }}
+            >
               Message
             </button>
-            <button className="flex-1 text-[13px] font-medium py-2.5 rounded-full border border-black/15 bg-transparent cursor-pointer transition-all duration-200 hover:bg-[--cream]" style={{ color: 'var(--ink2)' }}>
+            <button
+              style={{
+                flex: 1,
+                fontSize: 13,
+                fontWeight: 500,
+                padding: '9px 0',
+                borderRadius: 100,
+                border: '1px solid rgba(10,10,10,0.15)',
+                background: 'none',
+                color: 'var(--ink2)',
+                cursor: 'pointer',
+                fontFamily: 'var(--sans)',
+                transition: 'all 0.18s',
+              }}
+            >
               Save profile
             </button>
           </div>
