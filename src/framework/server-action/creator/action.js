@@ -26,15 +26,12 @@ export const updateCreatorProfile = async (payload)=>{
 
 export const fetchCreatorProfile = async (creatorId)=>{
     try{
-        console.log("fetching creator profile");  
         const url = URLS.CREATOR.PROFILE(creatorId);
-        console.log("URL for fetching creator profile",url);
         const response = await apiClient(url);
-        console.log("response for fetching creator profile",response);
         if(!response?.success){
             return { success: false, message: response?.message || 'Something went wrong', };
         }
-        return response;
+        return response?.data;
     }
     catch(error){
         console.error("Error fetching creator profile:", error);
@@ -51,10 +48,23 @@ export const fetchOverallAnalytics = async (creatorId)=>{
         if(!response?.success){
             return { success: false, message: response?.message || 'Something went wrong', };
         }
-        return response;
+        return response.data;
     }
     catch(error){
         console.error("Error fetching overall analytics:", error);
     }
 }
  
+export const fetchCreatorHeroBanner = async (creatorId) =>{
+    try{
+        const url = URLS.CREATOR.HERO_BANNER(creatorId);
+        const response = await apiClient(url);
+        if(!response?.success){
+            return { success: false, message: response?.message || 'Something went wrong', };
+        }
+        return response?.data;
+    }
+    catch(error){
+        console.error("Error fetching hero banner:", error);
+    }
+}

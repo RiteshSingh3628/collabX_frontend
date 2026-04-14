@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'motion/react'
 import {
   Users,
@@ -14,13 +15,55 @@ import {
 
 const ICON_MAP = { Users, Activity, Eye, Video, Heart }
 
+const PLATFORM_COLORS = {
+  Instagram: '#E1306C',
+  Youtube: '#FF0000',
+  Twitter: '#1DA1F2',
+}
+
+function formatNumber(num) {
+  if (num == null) return '0'
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + 'M'
+  if (num >= 1_000) return (num / 1_000).toFixed(1) + 'K'
+  return String(num)
+}
+
 export default function OverallAnalytics({ data }) {
   const {
-    overallMetrics,
-    engagementByPlatform,
-    bestPost,
-    contentMix,
-  } = data
+    combinedFollowers,
+    avgEngagement,
+    totalReach,
+    totalPosts,
+    avgLikesPerPost,
+    engagementByPlatform: platformEngagement,
+    bestPerformingPost,
+  } = data ?? {}
+
+  const overallMetrics = [
+    { icon: 'Users', label: 'Followers', value: formatNumber(combinedFollowers), iconBg: 'rgba(26,77,212,0.08)', iconColor: '#1a4fd4' },
+    { icon: 'Activity', label: 'Avg Engagement', value: `${avgEngagement ?? 0}%`, iconBg: 'rgba(26,122,69,0.08)', iconColor: '#1a7a45' },
+    { icon: 'Eye', label: 'Total Reach', value: formatNumber(totalReach), iconBg: 'rgba(201,168,76,0.1)', iconColor: '#c9a84c' },
+    { icon: 'Video', label: 'Total Posts', value: totalPosts ?? 0, iconBg: 'rgba(212,58,42,0.08)', iconColor: '#d43a2a' },
+    { icon: 'Heart', label: 'Avg Likes / Post', value: formatNumber(avgLikesPerPost), iconBg: 'rgba(212,58,42,0.08)', iconColor: '#d43a2a' },
+  ]
+
+  const engagementByPlatform = platformEngagement?.map((p) => ({
+    name: p.platform,
+    value: `${p.engagement ?? p.avgEngagement ?? 0}%`,
+    dotColor: PLATFORM_COLORS[p.platform] || '#999',
+    active: true,
+  }))
+
+  const bestPost = bestPerformingPost ? {
+    caption: bestPerformingPost.caption,
+    likes: formatNumber(bestPerformingPost.likeCount),
+    comments: formatNumber(bestPerformingPost.commentsCount),
+    date: bestPerformingPost.timestamp,
+    platform: bestPerformingPost.platform || 'Instagram',
+    link: bestPerformingPost.permalink,
+    thumbnail: bestPerformingPost.thumbnailUrl,
+    gradient: 'linear-gradient(135deg,#d43a2a,#8a1a10)',
+  } : null
 
   return (
     <motion.div
@@ -153,50 +196,6 @@ export default function OverallAnalytics({ data }) {
         })}
       </div>
 
-      {/* Engagement by platform */}
-      <div
-        className="flex items-center flex-wrap"
-        style={{
-          padding: '14px 20px',
-          borderTop: '1px solid var(--border)',
-          gap: 0,
-        }}
-      >
-        <span
-          className="shrink-0"
-          style={{ fontSize: 12, color: 'var(--ink3)', minWidth: 130 }}
-        >
-          Engagement by platform
-        </span>
-        <div className="flex flex-wrap" style={{ gap: 12 }}>
-          {engagementByPlatform?.map((p, i) => (
-            <div
-              key={i}
-              className="flex items-center"
-              style={{ gap: 7, opacity: p.active ? 1 : 0.35 }}
-            >
-              <span
-                className="shrink-0"
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: p.dotColor,
-                }}
-              />
-              <span style={{ fontSize: 12, color: 'var(--ink3)' }}>
-                {p.name}
-              </span>
-              <span
-                style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)' }}
-              >
-                {p.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Best performing post */}
       {bestPost && (
         <div
@@ -213,6 +212,7 @@ export default function OverallAnalytics({ data }) {
           <div
             className="shrink-0 flex items-center justify-center"
             style={{
+              position: 'relative',
               width: 48,
               height: 48,
               borderRadius: 10,
@@ -221,7 +221,18 @@ export default function OverallAnalytics({ data }) {
               background: bestPost.gradient,
             }}
           >
-            <Video size={16} color="rgba(255,255,255,0.5)" />
+            {bestPost.thumbnail ? (
+              <Image
+                src={bestPost.thumbnail}
+                alt=""
+                fill
+                style={{ objectFit: 'cover' }}
+                unoptimized
+              />
+            ) : (
+              <Video size={16} color="rgba(255,255,255,0.5)" />
+            )}
+
           </div>
           {/* Info */}
           <div className="flex-1 min-w-0">
@@ -285,57 +296,6 @@ export default function OverallAnalytics({ data }) {
         </div>
       )}
 
-      {/* Content mix */}
-      {contentMix && (
-        <div
-          className="flex flex-wrap items-center"
-          style={{
-            gap: 6,
-            padding: '12px 20px',
-            borderTop: '1px solid var(--border)',
-          }}
-        >
-          <span
-            className="self-center"
-            style={{
-              fontSize: 12,
-              color: 'var(--ink4, #ababab)',
-              marginRight: 4,
-            }}
-          >
-            Content mix:
-          </span>
-          {contentMix.map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center"
-              style={{
-                fontSize: '11.5px',
-                padding: '5px 13px',
-                borderRadius: 100,
-                border: '1px solid var(--border)',
-                background: 'var(--surface, #faf8f5)',
-                color: 'var(--ink2)',
-                gap: 6,
-              }}
-            >
-              <span
-                className="shrink-0"
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: '50%',
-                  background: item.color,
-                }}
-              />
-              {item.label}
-              <span style={{ fontSize: '10.5px', color: 'var(--ink4, #ababab)', marginLeft: 2 }}>
-                {item.pct}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
     </motion.div>
   )
 }

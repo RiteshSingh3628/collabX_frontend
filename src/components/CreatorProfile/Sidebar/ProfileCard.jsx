@@ -14,6 +14,16 @@ import {
 const FIELD_ICONS = { MapPin, Clock, MessageSquare, DollarSign, Calendar, Users }
 
 export default function ProfileCard({ profile, onInvite }) {
+  const { interests,user, location, gender, rating, totalCampaigns, isVerified } = profile ?? {};
+  const creator_name = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim() || 'Unnamed Creator';
+
+  const creatorInfo = [
+    { icon: 'MapPin', key: 'Location', value: [location?.city, location?.state, location?.country].filter(Boolean).join(', ') || '—' },
+    { icon: 'Users', key: 'Gender', value: gender ? gender.charAt(0).toUpperCase() + gender.slice(1) : '—' },
+    { icon: 'Calendar', key: 'Campaigns', value: totalCampaigns ?? 0, bold: true },
+    { icon: 'DollarSign', key: 'Rating', value: rating ? `${rating} / 5` : 'No ratings yet', muted: !rating },
+    { icon: 'Clock', key: 'Verified', value: isVerified ? 'Verified' : 'Pending', tag: true, tagColor: isVerified ? 'green' : 'red' },
+  ];
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -33,7 +43,7 @@ export default function ProfileCard({ profile, onInvite }) {
           style={{ gap: 6, marginBottom: 3 }}
         >
           <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
-            {profile?.name}
+            {creator_name}
           </span>
           {profile?.verified && (
             <span
@@ -107,7 +117,7 @@ export default function ProfileCard({ profile, onInvite }) {
             gap: 0,
           }}
         >
-          {profile?.creatorInfo?.map((field, i) => {
+          {creatorInfo?.map((field, i) => {
             const Icon = FIELD_ICONS[field.icon]
             return (
               <div
@@ -116,7 +126,7 @@ export default function ProfileCard({ profile, onInvite }) {
                 style={{
                   padding: '9px 13px',
                   borderBottom:
-                    i < profile.creatorInfo.length - 1
+                    i < creatorInfo.length - 1
                       ? '1px solid var(--border)'
                       : 'none',
                   gap: 10,
@@ -193,7 +203,7 @@ export default function ProfileCard({ profile, onInvite }) {
           Content niches
         </div>
         <div className="flex flex-wrap" style={{ gap: 5, marginBottom: 16 }}>
-          {profile?.niches?.map((niche) => (
+          {interests?.map((niche) => (
             <span
               key={niche}
               style={{

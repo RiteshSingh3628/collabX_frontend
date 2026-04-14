@@ -2,10 +2,13 @@
 
 import { Instagram, Youtube, Twitter } from 'lucide-react'
 import { PLATFORM_TABS } from '@/constants/creatorProfileData'
+import Image from 'next/image';
 
 const ICON_MAP = { Instagram, Youtube, Twitter }
 
 export default function HeroBanner({ profile }) {
+  const { user, profilePicture, coverPicture } = profile ?? {};
+  const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim();
   return (
     <div className="relative" style={{ marginBottom: 36 }}>
     <div
@@ -15,45 +18,60 @@ export default function HeroBanner({ profile }) {
         background: 'linear-gradient(135deg,#0a0a0a 0%,#1c1710 40%,#2e1f0a 100%)',
       }}
     >
-      {/* Dot pattern */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px)',
-          backgroundSize: '18px 18px',
-        }}
-      />
-      {/* Red glow */}
-      <div
-        className="absolute"
-        style={{
-          right: '10%',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          background:
-            'radial-gradient(circle,rgba(212,58,42,0.2),transparent 70%)',
-        }}
-      />
-      {/* Gold glow */}
-      <div
-        className="absolute"
-        style={{
-          left: '20%',
-          top: '30%',
-          width: 200,
-          height: 200,
-          borderRadius: '50%',
-          background:
-            'radial-gradient(circle,rgba(201,168,76,0.1),transparent 70%)',
-        }}
-      />
+      {coverPicture ? (
+        <>
+          <Image
+            src={coverPicture}
+            alt="Cover"
+            fill
+            className="object-cover"
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-black/30" />
+        </>
+      ) : (
+        <>
+          {/* Dot pattern */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px)',
+              backgroundSize: '18px 18px',
+            }}
+          />
+          {/* Red glow */}
+          <div
+            className="absolute"
+            style={{
+              right: '10%',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 300,
+              height: 300,
+              borderRadius: '50%',
+              background:
+                'radial-gradient(circle,rgba(212,58,42,0.2),transparent 70%)',
+            }}
+          />
+          {/* Gold glow */}
+          <div
+            className="absolute"
+            style={{
+              left: '20%',
+              top: '30%',
+              width: 200,
+              height: 200,
+              borderRadius: '50%',
+              background:
+                'radial-gradient(circle,rgba(201,168,76,0.1),transparent 70%)',
+            }}
+          />
+        </>
+      )}
 
       {/* Platform pills top-right */}
-      <div
+      {/* <div
         className="absolute flex"
         style={{ top: 24, right: 32, gap: 8 }}
       >
@@ -81,21 +99,21 @@ export default function HeroBanner({ profile }) {
             </div>
           )
         })}
-      </div>
+      </div> */}
 
       {/* Name text */}
-      <div className="absolute" style={{ bottom: 28, left: 200 }}>
+      <div className="absolute" style={{ bottom: 0, left: 150 }}>
         <div
           style={{
             fontFamily: 'var(--serif)',
             fontSize: 32,
-            fontWeight: 300,
+            fontWeight: 600,
             color: 'rgba(255,255,255,0.9)',
             letterSpacing: '0.02em',
-            marginBottom: 4,
+
           }}
         >
-          {profile?.fullName || profile?.name}
+          {fullName}
         </div>
         <div
           style={{
@@ -126,7 +144,7 @@ export default function HeroBanner({ profile }) {
           }}
         >
           <div
-            className="w-full h-full flex items-center justify-center"
+            className="relative w-full h-full flex items-center overflow-hidden justify-center"
             style={{
               fontFamily: 'var(--serif)',
               fontSize: 36,
@@ -134,24 +152,12 @@ export default function HeroBanner({ profile }) {
               color: '#fff',
             }}
           >
-            {profile?.name?.charAt(0)}
+            <Image 
+              src={profilePicture}
+              alt={fullName}
+              fill
+            />
           </div>
-        </div>
-        {/* Instagram badge */}
-        <div
-          className="absolute flex items-center justify-center"
-          style={{
-            bottom: -4,
-            right: -4,
-            width: 24,
-            height: 24,
-            borderRadius: 7,
-            background:
-              'linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)',
-            border: '2px solid #fff',
-          }}
-        >
-          <Instagram size={12} color="#fff" />
         </div>
       </div>
     </div>

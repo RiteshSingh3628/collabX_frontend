@@ -16,123 +16,16 @@ import {
 import InviteModal from './InviteModal'
 import { CREATOR_PROFILE } from '@/constants/creatorProfileData'
 
-export default function CreatorProfilePage() {
+export default function CreatorProfilePage({ creatorId, creatorProfileData, overallAnalyticsData, heroBannerData }) {
   const router = useRouter()
   const [inviteOpen, setInviteOpen] = useState(false)
   const data = CREATOR_PROFILE
 
   return (
     <>
-      {/* Nav bar */}
-      <div
-        className="fixed top-0 left-0 right-0 z-50 flex items-center"
-        style={{
-          height: 58,
-          background: '#fff',
-          borderBottom: '1px solid var(--border)',
-          padding: '0 28px',
-          gap: 12,
-        }}
-      >
-        <button
-          onClick={() => router.back()}
-          className="flex items-center cursor-pointer"
-          style={{
-            gap: 6,
-            fontSize: 13,
-            color: 'var(--ink3)',
-            border: 'none',
-            background: 'none',
-            fontFamily: 'var(--sans)',
-            transition: 'color 0.18s',
-          }}
-        >
-          <ArrowLeft size={15} />
-          Back to discover
-        </button>
-        <div
-          style={{
-            width: 1,
-            height: 18,
-            background: 'rgba(10,10,10,0.15)',
-          }}
-        />
-        <div
-          className="flex items-center"
-          style={{
-            fontFamily: 'var(--serif)',
-            fontSize: 18,
-            fontWeight: 600,
-            color: 'var(--ink)',
-            gap: 8,
-          }}
-        >
-          <div
-            className="flex items-center justify-center shrink-0"
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 6,
-              background: 'var(--ink)',
-            }}
-          >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: 'var(--red, #d43a2a)',
-                display: 'block',
-              }}
-            />
-          </div>
-          CollabXSphere
-        </div>
-        <span style={{ fontSize: 13, color: 'var(--ink4, #ababab)' }}>
-          / Creator Profile
-        </span>
-
-        {/* Right buttons */}
-        <div className="ml-auto flex items-center" style={{ gap: 8 }}>
-          <button
-            style={{
-              fontSize: 13,
-              fontWeight: 500,
-              padding: '7px 18px',
-              borderRadius: 100,
-              cursor: 'pointer',
-              border: '1px solid rgba(10,10,10,0.15)',
-              background: 'none',
-              color: 'var(--ink2)',
-              fontFamily: 'var(--sans)',
-              transition: 'all 0.2s',
-            }}
-          >
-            Save to shortlist
-          </button>
-          <button
-            onClick={() => setInviteOpen(true)}
-            style={{
-              fontSize: 13,
-              fontWeight: 500,
-              padding: '7px 18px',
-              borderRadius: 100,
-              cursor: 'pointer',
-              border: '1px solid var(--red, #d43a2a)',
-              background: 'var(--red, #d43a2a)',
-              color: '#fff',
-              fontFamily: 'var(--sans)',
-              transition: 'all 0.2s',
-            }}
-          >
-            Invite to campaign
-          </button>
-        </div>
-      </div>
-
       {/* Hero banner */}
       <div style={{ marginTop: 58 }}>
-        <HeroBanner profile={data} />
+        <HeroBanner profile={heroBannerData} />
       </div>
 
       {/* Page grid */}
@@ -153,13 +46,13 @@ export default function CreatorProfilePage() {
             top: 'calc(58px + 16px)',
           }}
         >
-          <ProfileCard profile={data} onInvite={() => setInviteOpen(true)} />
+          <ProfileCard profile={creatorProfileData} onInvite={() => setInviteOpen(true)} />
           <CampaignFitScore campaignFit={data.campaignFit} />
         </aside>
 
         {/* Right main */}
         <div className="flex flex-col" style={{ gap: 18 }}>
-          <OverallAnalytics data={data} />
+          <OverallAnalytics data={overallAnalyticsData} />
           <PlatformSection
             stats={data.stats}
             posts={data.recentPosts}

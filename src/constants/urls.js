@@ -15,6 +15,7 @@ const URLS = {
         UPDATE: `${BASE_URL}api/creators/update`,
         PROFILE: (creatorId) => `${BASE_URL}api/creators/${creatorId}/profile`,
         OVERALL_ANALYTICS: (creatorId) => `${BASE_URL}api/creators/${creatorId}/analytics`,
+        HERO_BANNER: (creatorId) => `${BASE_URL}api/creators/${creatorId}/hero-banner`,
     },
     PLATFORM:{
         CONNECT_INSTAGRAM: `${BASE_URL}api/social-accounts/connect/instagram`,
