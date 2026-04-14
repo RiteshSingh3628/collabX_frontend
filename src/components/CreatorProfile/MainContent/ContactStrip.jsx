@@ -8,31 +8,69 @@ export default function ContactStrip({ creatorName, onInvite }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="rounded-[20px] px-7 py-7 flex flex-col min-[920px]:flex-row items-start min-[920px]:items-center justify-between gap-6"
-      style={{ background: 'var(--ink)' }}
+      transition={{ duration: 0.5, delay: 0.16 }}
+      className="flex flex-col min-[640px]:flex-row items-start min-[640px]:items-center justify-between"
+      style={{
+        background: 'var(--ink)',
+        borderRadius: 18,
+        padding: '24px 28px',
+        gap: 24,
+      }}
     >
       <div>
         <div
-          className="text-[22px] font-light text-white mb-1"
-          style={{ fontFamily: 'var(--serif)' }}
+          style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 20,
+            fontWeight: 300,
+            color: '#fff',
+            marginBottom: 4,
+          }}
         >
           Ready to collab with{' '}
-          <em style={{ color: 'var(--red)' }}>{creatorName}?</em>
+          <em style={{ color: 'var(--red, #d43a2a)' }}>{creatorName}?</em>
         </div>
-        <div className="text-[13px]" style={{ color: 'rgba(255,255,255,0.45)' }}>
-          Send a campaign invite or message directly &mdash; response usually within 24 hrs.
+        <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.4)' }}>
+          Send a campaign invite &mdash; response typically within 24 hrs.
         </div>
       </div>
 
-      <div className="flex gap-2.5 shrink-0">
-        <button className="text-[13px] font-medium px-6 py-[11px] rounded-full text-white border border-white/20 bg-white/10 cursor-pointer transition-all duration-200 whitespace-nowrap hover:bg-white/[0.18]">
+      <div
+        className="flex shrink-0 w-full min-[640px]:w-auto"
+        style={{ gap: 10 }}
+      >
+        <button
+          className="flex-1 min-[640px]:flex-none text-center"
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            padding: '10px 22px',
+            borderRadius: 100,
+            background: 'rgba(255,255,255,0.1)',
+            color: '#fff',
+            border: '1px solid rgba(255,255,255,0.18)',
+            cursor: 'pointer',
+            fontFamily: 'var(--sans)',
+            transition: 'all 0.18s',
+          }}
+        >
           Send message
         </button>
         <button
           onClick={onInvite}
-          className="text-[13px] font-semibold px-7 py-[11px] rounded-full text-white border-none cursor-pointer transition-all duration-200 whitespace-nowrap hover:bg-[#b02d1f] hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(212,58,42,0.35)]"
-          style={{ background: 'var(--red)' }}
+          className="flex-1 min-[640px]:flex-none text-center"
+          style={{
+            fontSize: 13,
+            fontWeight: 600,
+            padding: '10px 24px',
+            borderRadius: 100,
+            background: 'var(--red, #d43a2a)',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'var(--sans)',
+            transition: 'all 0.22s',
+          }}
         >
           Invite to campaign &rarr;
         </button>
