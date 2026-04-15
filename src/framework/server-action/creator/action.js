@@ -23,3 +23,48 @@ export const updateCreatorProfile = async (payload)=>{
         console.error("Error updating creator profile:", error);
     }
 }
+
+export const fetchCreatorProfile = async (creatorId)=>{
+    try{
+        const url = URLS.CREATOR.PROFILE(creatorId);
+        const response = await apiClient(url);
+        if(!response?.success){
+            return { success: false, message: response?.message || 'Something went wrong', };
+        }
+        return response?.data;
+    }
+    catch(error){
+        console.error("Error fetching creator profile:", error);
+    }
+}
+
+export const fetchOverallAnalytics = async (creatorId)=>{
+    try{
+        console.log("fetching overall analytics for creator", creatorId);  
+        const url = URLS.CREATOR.OVERALL_ANALYTICS(creatorId);
+        console.log("URL for fetching overall analytics",url);
+        const response = await apiClient(url);
+        console.log("response for fetching overall analytics",response);
+        if(!response?.success){
+            return { success: false, message: response?.message || 'Something went wrong', };
+        }
+        return response.data;
+    }
+    catch(error){
+        console.error("Error fetching overall analytics:", error);
+    }
+}
+ 
+export const fetchCreatorHeroBanner = async (creatorId) =>{
+    try{
+        const url = URLS.CREATOR.HERO_BANNER(creatorId);
+        const response = await apiClient(url);
+        if(!response?.success){
+            return { success: false, message: response?.message || 'Something went wrong', };
+        }
+        return response?.data;
+    }
+    catch(error){
+        console.error("Error fetching hero banner:", error);
+    }
+}
