@@ -152,11 +152,15 @@ export default function HeroBanner({ profile }) {
               color: '#fff',
             }}
           >
-            <Image 
-              src={profilePicture}
-              alt={fullName}
-              fill
-            />
+            {profilePicture ? (
+              <Image
+                src={profilePicture}
+                alt={fullName}
+                fill
+              />
+            ) : (
+              fullName.charAt(0).toUpperCase()
+            )}
           </div>
         </div>
       </div>
