@@ -83,10 +83,22 @@ export const authOptions = {
         return token;
       }
 
+      // If refresh token also expired → invalidate session
+      if (token.refreshTokenExpiryTime && now >= token.refreshTokenExpiryTime) {
+        return {
+          ...token,
+          user: null,
+          accessToken: null,
+          error: "RefreshTokenExpired",
+        };
+      }
+
       // If expired → refresh
       return await refreshAccessToken(token);
     },
     async session({ session, token }) {
+      if (!token.user || token.error) return null;
+
       session.user = token.user;
       session.accessToken = token.accessToken;
       session.error = token.error;
@@ -96,6 +108,7 @@ export const authOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 60*60*24,
   },
   secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
   pages: {
