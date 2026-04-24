@@ -1,13 +1,14 @@
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/utils/auth'
+import { ROLES } from '@/lib/rbac'
+import BrandDashboard from '@/components/Dashboard/BrandDashboard'
+import CreatorDashboard from '@/components/Dashboard/CreatorDashboard'
 
-export default function Home() {
-  return (
-    <div style={{ padding: '2rem' }}>   
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1rem' }}>
-            Welcome to the Dashboard
-        </h1>
-        <p style={{ fontSize: '1rem', color: '#6a6a6a' }}>
-            This is the protected home page. You can add your dashboard content here.   
-        </p>
-    </div>
-    )   
+export default async function Home() {
+  const session = await getServerSession(authOptions)
+  const role = session?.user?.role
+  const user = session?.user
+
+  if (role === ROLES.CREATOR) return <CreatorDashboard user={user} />
+  return <BrandDashboard user={user} />
 }
