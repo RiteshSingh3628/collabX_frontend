@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="min-h-full flex flex-col">
+        <NextTopLoader color="#d43a2a" showSpinner={false} />
         <AuthProvider>
           {children}
         </AuthProvider>
