@@ -3,5 +3,6 @@ import OverallAnalytics from './MainContent/OverallAnalytics'
 
 export default async function AnalyticsSection({ id }) {
   const data = await fetchOverallAnalytics(id)
+  if (!data) return null
   return <OverallAnalytics data={data} />
 }

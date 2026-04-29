@@ -127,7 +127,15 @@ async function executeFetch(url, options) {
   }
 
   // Handle binary responses (file downloads)
-  if (contentType.includes("octet-stream")) {
+  if (contentType.includes("octet-stream") || contentType.includes("pdf")) {
+    return response;
+  }
+
+  // Handle SSE streams — return raw response so caller can read the stream
+  if (contentType.includes("text/event-stream")) {
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
     return response;
   }
 
