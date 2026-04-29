@@ -13,6 +13,7 @@ import TextInput from "@/components/Custom_UI/TextInput";
 import ButtonWrapper from "@/components/Custom_UI/Button";
 import { ArrowRight, Check } from "lucide-react";
 import { signUp } from "@/framework/server-action/auth/action";
+import NProgress from "nprogress";
 
 
 function RegisterForm() {
@@ -36,16 +37,21 @@ function RegisterForm() {
       console.log("payload",data)
       data.role = "influencer";
       setIsSubmitting(true);
+      NProgress.start();
       startTransition(async () => {
-        const response = await signUp(data);
-        if (response?.success) {
-          setDone(true)
-          toast.success(response?.message);
-          reset();
-        } else {
-          toast.error(response?.message);
+        try {
+          const response = await signUp(data);
+          if (response?.success) {
+            setDone(true)
+            toast.success(response?.message);
+            reset();
+          } else {
+            toast.error(response?.message);
+          }
+        } finally {
+          NProgress.done();
+          setIsSubmitting(false);
         }
-        setIsSubmitting(false);
       });
   };
 

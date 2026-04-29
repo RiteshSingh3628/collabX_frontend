@@ -13,6 +13,7 @@ import { loginSchema, DEFAULT_VALUES } from "@/validations/LoginSchema";
 import { signIn } from "next-auth/react";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
 import { useRouter } from "next/navigation";
+import NProgress from "nprogress";
 
 function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,19 +34,24 @@ function LoginForm() {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
+    NProgress.start();
     startTransition(async () => {
-      const response = await signIn("credentials", {
-          email: data.email,
-          password: data.password,
-          redirect: false,
-        });
-      if (response?.ok) {
-        toast.success(response?.message || 'Login successfull');
-        router.push('/onboarding/brand');
-      } else {
-        toast.error(response?.message || 'Login failed');
+      try {
+        const response = await signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            redirect: false,
+          });
+        if (response?.ok) {
+          toast.success(response?.message || 'Login successfull');
+          router.push('/onboarding/brand');
+        } else {
+          toast.error(response?.message || 'Login failed');
+        }
+      } finally {
+        NProgress.done();
+        setIsSubmitting(false);
       }
-      setIsSubmitting(false);
     });
   };
 
