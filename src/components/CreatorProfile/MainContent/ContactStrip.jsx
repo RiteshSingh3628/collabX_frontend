@@ -1,9 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'motion/react'
+import InviteModal from '../InviteModal'
 
-export default function ContactStrip({ creatorName, onInvite }) {
+export default function ContactStrip({ creatorName }) {
+  const [inviteOpen, setInviteOpen] = useState(false)
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -57,7 +61,7 @@ export default function ContactStrip({ creatorName, onInvite }) {
           Send message
         </button>
         <button
-          onClick={onInvite}
+          onClick={() => setInviteOpen(true)}
           className="flex-1 min-[640px]:flex-none text-center"
           style={{
             fontSize: 13,
@@ -76,5 +80,12 @@ export default function ContactStrip({ creatorName, onInvite }) {
         </button>
       </div>
     </motion.div>
+
+    <InviteModal
+      open={inviteOpen}
+      onOpenChange={setInviteOpen}
+      creatorName={creatorName}
+    />
+    </>
   )
 }

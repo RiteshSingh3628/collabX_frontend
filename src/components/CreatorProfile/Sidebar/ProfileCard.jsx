@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'motion/react'
 import {
   BadgeCheck,
@@ -10,10 +11,12 @@ import {
   Calendar,
   Users,
 } from 'lucide-react'
+import InviteModal from '../InviteModal'
 
 const FIELD_ICONS = { MapPin, Clock, MessageSquare, DollarSign, Calendar, Users }
 
-export default function ProfileCard({ profile, onInvite }) {
+export default function ProfileCard({ profile }) {
+  const [inviteOpen, setInviteOpen] = useState(false)
   const { interests,user, location, gender, rating, totalCampaigns, isVerified } = profile ?? {};
   const creator_name = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim() || 'Unnamed Creator';
 
@@ -25,6 +28,7 @@ export default function ProfileCard({ profile, onInvite }) {
     { icon: 'Clock', key: 'Verified', value: isVerified ? 'Verified' : 'Pending', tag: true, tagColor: isVerified ? 'green' : 'red' },
   ];
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -223,7 +227,7 @@ export default function ProfileCard({ profile, onInvite }) {
         {/* CTAs */}
         <div className="flex flex-col" style={{ gap: 8 }}>
           <button
-            onClick={onInvite}
+            onClick={() => setInviteOpen(true)}
             style={{
               width: '100%',
               fontSize: 14,
@@ -279,5 +283,12 @@ export default function ProfileCard({ profile, onInvite }) {
         </div>
       </div>
     </motion.div>
+
+    <InviteModal
+      open={inviteOpen}
+      onOpenChange={setInviteOpen}
+      creatorName={creator_name}
+    />
+  </>
   )
 }

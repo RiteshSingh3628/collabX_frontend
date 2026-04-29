@@ -1,31 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
-
-import HeroBanner from './HeroBanner'
-import { ProfileCard } from './Sidebar'
-import {
-  CampaignFitScore,
-  OverallAnalytics,
-  PlatformSection,
-  PastWorksReviews,
-  ContactStrip,
-} from './MainContent'
-import InviteModal from './InviteModal'
+import { CampaignFitScore, PlatformSection, PastWorksReviews, ContactStrip } from './MainContent'
 import { CREATOR_PROFILE } from '@/constants/creatorProfileData'
 
-export default function CreatorProfilePage({ creatorId, creatorProfileData, overallAnalyticsData, heroBannerData }) {
-  const router = useRouter()
-  const [inviteOpen, setInviteOpen] = useState(false)
+export default function CreatorProfilePage({ heroBannerSlot, profileCardSlot, analyticsSlot }) {
   const data = CREATOR_PROFILE
 
   return (
     <>
       {/* Hero banner */}
       <div style={{ marginTop: 58 }}>
-        <HeroBanner profile={heroBannerData} />
+        {heroBannerSlot}
       </div>
 
       {/* Page grid */}
@@ -46,32 +32,22 @@ export default function CreatorProfilePage({ creatorId, creatorProfileData, over
             top: 'calc(58px + 16px)',
           }}
         >
-          <ProfileCard profile={creatorProfileData} onInvite={() => setInviteOpen(true)} />
+          {profileCardSlot}
           <CampaignFitScore campaignFit={data.campaignFit} />
         </aside>
 
         {/* Right main */}
         <div className="flex flex-col" style={{ gap: 18 }}>
-          <OverallAnalytics data={overallAnalyticsData} />
+          {analyticsSlot}
           <PlatformSection
             stats={data.stats}
             posts={data.recentPosts}
             engagementBreakdown={data.engagementBreakdown}
           />
           <PastWorksReviews creatorName={data.name} />
-          <ContactStrip
-            creatorName={data.name}
-            onInvite={() => setInviteOpen(true)}
-          />
+          <ContactStrip creatorName={data.name} />
         </div>
       </div>
-
-      {/* Invite modal */}
-      <InviteModal
-        open={inviteOpen}
-        onOpenChange={setInviteOpen}
-        creatorName={data.name}
-      />
     </>
   )
 }

@@ -15,6 +15,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { signUp } from "@/framework/server-action/auth/action";
 import { success } from "zod";
 import LoadingDots from "@/components/Custom_UI/Button/LoadingDots";
+import NProgress from "nprogress";
 
 function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,17 +38,21 @@ function RegisterForm() {
     console.log("payload",data)
     data.role = "brand";
     setIsSubmitting(true);
+    NProgress.start();
     startTransition(async () => {
-      const response = await signUp(data);
-      // const response = {success: true, message: "User registered successfully"}
-      if (response?.success) {
-        setDone(true)
-        toast.success(response?.message);
-        reset();
-      } else {
-        toast.error(response?.message);
+      try {
+        const response = await signUp(data);
+        if (response?.success) {
+          setDone(true)
+          toast.success(response?.message);
+          reset();
+        } else {
+          toast.error(response?.message);
+        }
+      } finally {
+        NProgress.done();
+        setIsSubmitting(false);
       }
-      setIsSubmitting(false);
     });
   };
 

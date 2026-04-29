@@ -11,11 +11,12 @@ const URLS = {
         UPDATE: `${BASE_URL}/api/brands/update`,
     },
     CREATOR:{
-        CREATE: `${BASE_URL}/api/creators/create`,
-        UPDATE: `${BASE_URL}/api/creators/update`,
-        PROFILE: (creatorId) => `${BASE_URL}/api/creators/${creatorId}/profile`,
-        OVERALL_ANALYTICS: (creatorId) => `${BASE_URL}/api/creators/${creatorId}/analytics`,
-        HERO_BANNER: (creatorId) => `${BASE_URL}/api/creators/${creatorId}/hero-banner`,
+        CREATE: `${BASE_URL}api/creators/create`,
+        UPDATE: `${BASE_URL}api/creators/update`,
+        PROFILE: (creatorId) => `${BASE_URL}api/creators/${creatorId}/profile`,
+        OVERALL_ANALYTICS: (creatorId) => `${BASE_URL}api/creators/${creatorId}/analytics`,
+        HERO_BANNER: (creatorId) => `${BASE_URL}api/creators/${creatorId}/hero-banner`,
+        COVER_PICTURE: `${BASE_URL}api/creators/picture/cover`,
     },
     PLATFORM:{
         CONNECT_INSTAGRAM: `${BASE_URL}/api/social-accounts/connect/instagram`,
