@@ -1,19 +1,17 @@
-import apiClient from "@/lib/utils/apiClient";
+"use server";
+
+import { serverApiClient } from "@/lib/utils/apiClient";
 import URLS from "@/constants/urls";
 
 
 export const updateCreatorProfile = async (payload)=>{
     try{
-        console.log("payload for creator onboarding",payload);
         const url = URLS.CREATOR.UPDATE;
-        console.log("URL for creator onboarding",url);
         const options = {
             method: "PUT",
             body: JSON.stringify(payload),
-
         }
-        const response = await apiClient(url, options);
-        console.log("creator onboarding",response);
+        const response = await serverApiClient(url, options);
         if(!response?.success){
             return { success: false, message: response?.message || 'Something went wrong', };
         }
@@ -27,7 +25,7 @@ export const updateCreatorProfile = async (payload)=>{
 export const fetchCreatorProfile = async (creatorId)=>{
     try{
         const url = URLS.CREATOR.PROFILE(creatorId);
-        const response = await apiClient(url);
+        const response = await serverApiClient(url);
         if(!response?.success){
             return { success: false, message: response?.message || 'Something went wrong', };
         }
@@ -40,25 +38,40 @@ export const fetchCreatorProfile = async (creatorId)=>{
 
 export const fetchOverallAnalytics = async (creatorId)=>{
     try{
-        console.log("fetching overall analytics for creator", creatorId);  
         const url = URLS.CREATOR.OVERALL_ANALYTICS(creatorId);
-        console.log("URL for fetching overall analytics",url);
-        const response = await apiClient(url);
-        console.log("response for fetching overall analytics",response);
+        const response = await serverApiClient(url);
         if(!response?.success){
-            return { success: false, message: response?.message || 'Something went wrong', };
+            return null;
         }
         return response.data;
     }
     catch(error){
         console.error("Error fetching overall analytics:", error);
+        return null;
     }
 }
  
+export const updateCoverPicture = async (formData) => {
+    try {
+        const response = await serverApiClient(URLS.CREATOR.COVER_PICTURE, {
+            method: 'PATCH',
+            body: formData,
+            isForm: true,
+        });
+        if (!response?.success) {
+            return { success: false, message: response?.message || 'Something went wrong' };
+        }
+        return response;
+    } catch (error) {
+        console.error('Error updating cover picture:', error);
+        return { success: false, message: 'Something went wrong' };
+    }
+}
+
 export const fetchCreatorHeroBanner = async (creatorId) =>{
     try{
         const url = URLS.CREATOR.HERO_BANNER(creatorId);
-        const response = await apiClient(url);
+        const response = await serverApiClient(url);
         if(!response?.success){
             return { success: false, message: response?.message || 'Something went wrong', };
         }

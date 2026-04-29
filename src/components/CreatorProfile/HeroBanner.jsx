@@ -1,14 +1,44 @@
 'use client'
 
-import { Instagram, Youtube, Twitter } from 'lucide-react'
+import { useRef, useState, useTransition } from 'react'
+import { Instagram, Youtube, Twitter, Camera } from 'lucide-react'
 import { PLATFORM_TABS } from '@/constants/creatorProfileData'
 import Image from 'next/image';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button'
+import { createFormDataPayload } from '@/lib/utils/formData'
+import { updateCoverPicture } from '@/framework/server-action/creator/action'
 
 const ICON_MAP = { Instagram, Youtube, Twitter }
 
 export default function HeroBanner({ profile }) {
   const { user, profilePicture, coverPicture } = profile ?? {};
   const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim();
+  const [coverSrc, setCoverSrc] = useState(coverPicture ?? null);
+  const [isPending, startTransition] = useTransition();
+  const fileInputRef = useRef(null);
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 1 * 1024 * 1024) {
+      toast.error('Image must be under 1 MB');
+      e.target.value = '';
+      return;
+    }
+    const formData = createFormDataPayload({ media: file });
+    e.target.value = '';
+    startTransition(async () => {
+      const result = await updateCoverPicture(formData);
+      if (result?.success && result?.data?.coverPicture) {
+        setCoverSrc(result.data.coverPicture);
+        toast.success('Cover image updated');
+      } else {
+        toast.error(result?.message ?? 'Failed to update cover image');
+      }
+    });
+  }
+
   return (
     <div className="relative" style={{ marginBottom: 36 }}>
     <div
@@ -18,10 +48,10 @@ export default function HeroBanner({ profile }) {
         background: 'linear-gradient(135deg,#0a0a0a 0%,#1c1710 40%,#2e1f0a 100%)',
       }}
     >
-      {coverPicture ? (
+      {coverSrc ? (
         <>
           <Image
-            src={coverPicture}
+            src={coverSrc}
             alt="Cover"
             fill
             className="object-cover"
@@ -100,6 +130,35 @@ export default function HeroBanner({ profile }) {
           )
         })}
       </div> */}
+
+      {/* Edit cover button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => fileInputRef.current?.click()}
+        disabled={isPending}
+        className="absolute gap-1.5"
+        style={{
+          top: 12,
+          right: 16,
+          background: 'rgba(0,0,0,0.55)',
+          backdropFilter: 'blur(6px)',
+          border: '1px solid rgba(255,255,255,0.18)',
+          borderRadius: 8,
+          color: 'rgba(255,255,255,0.85)',
+          fontSize: 12,
+        }}
+      >
+        <Camera size={13} />
+        {isPending ? 'Uploading…' : 'Edit cover'}
+      </Button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
 
       {/* Name text */}
       <div className="absolute" style={{ bottom: 0, left: 150 }}>
