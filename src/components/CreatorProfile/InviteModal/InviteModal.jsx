@@ -149,7 +149,7 @@ export default function InviteModal({ open, onOpenChange, creatorName }) {
             disabled={sending}
             className="w-full text-sm font-semibold py-[13px] rounded-full bg-[--ink] text-white border-none cursor-pointer transition-all duration-200 hover:bg-[#2a2a2a] disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {sending ? 'Sending\u2026' : 'Send invite \u2192'}
+            {sending ? 'Sending…' : 'Send invite →'}
           </button>
         </div>
       </DialogContent>

@@ -1,3 +1,7 @@
 export { default as CreatorProfilePage } from './CreatorProfilePage'
 export { default as CreatorProfileSkeleton } from './CreatorProfileSkeleton'
+export { default as HeroBannerSection } from './HeroBannerSection'
+export { default as ProfileSection } from './ProfileSection'
+export { default as AnalyticsSection } from './AnalyticsSection'
+export { default as InviteModal } from './InviteModal'
 export { default as HeroBanner } from './HeroBanner'

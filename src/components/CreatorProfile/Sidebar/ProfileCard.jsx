@@ -49,7 +49,7 @@ export default function ProfileCard({ profile }) {
           <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
             {creator_name}
           </span>
-          {profile?.verified && (
+          {profile?.isVerified && (
             <span
               className="flex items-center justify-center shrink-0"
               style={{
