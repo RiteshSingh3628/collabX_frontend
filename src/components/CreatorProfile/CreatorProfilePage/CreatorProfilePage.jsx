@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { CampaignFitScore, PlatformSection, PastWorksReviews, ContactStrip } from './MainContent'
+import { CampaignFitScore, PlatformSection, PastWorksReviews, ContactStrip } from '../MainContent'
 import { CREATOR_PROFILE } from '@/constants/creatorProfileData'
 
 export default function CreatorProfilePage({ heroBannerSlot, profileCardSlot, analyticsSlot }) {
