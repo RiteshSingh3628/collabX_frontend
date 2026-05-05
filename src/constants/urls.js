@@ -19,6 +19,10 @@ const URLS = {
         HERO_BANNER: (creatorId) => `${BASE_URL}/api/creators/${creatorId}/hero-banner`,
         COVER_PICTURE: `${BASE_URL}/api/creators/picture/cover`,
     },
+    CAMPAIGN:{
+        PUBLISH: `${BASE_URL}/api/campaigns/publish`,
+        DRAFT:   `${BASE_URL}/api/campaigns/draft`,
+    },
     PLATFORM:{
         CONNECT_INSTAGRAM: `${BASE_URL}/api/social-accounts/connect/instagram`,
     }

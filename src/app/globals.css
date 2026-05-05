@@ -295,6 +295,52 @@ section {
   animation-delay: 0.43s;
 }
 
+/* ── Campaign create form additions ── */
+:root {
+  --ink4: #a8a8a8;
+  --surface: #faf9f7;
+  --green: #1a7a45;
+  --green-bg: #edfaf3;
+  --green-border: rgba(26, 122, 69, 0.2);
+  --blue: #1a4fd4;
+  --blue-bg: rgba(26, 79, 212, 0.07);
+  --amber: #a0620a;
+  --amber-bg: rgba(160, 98, 10, 0.08);
+  --red-bg: rgba(212, 58, 42, 0.08);
+  --red-border: rgba(212, 58, 42, 0.2);
+}
+
+@keyframes cc-fadeUp {
+  from { opacity: 0; transform: translateY(12px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+@keyframes cc-stepIn {
+  from { opacity: 0; transform: translateX(18px) }
+  to   { opacity: 1; transform: translateX(0) }
+}
+@keyframes cc-stepBack {
+  from { opacity: 0; transform: translateX(-18px) }
+  to   { opacity: 1; transform: translateX(0) }
+}
+@keyframes cc-slideIn {
+  from { opacity: 0; transform: translateY(-5px) scale(.98) }
+  to   { opacity: 1; transform: translateY(0) scale(1) }
+}
+@keyframes cc-pulse {
+  0%, 100% { opacity: 1 }
+  50%       { opacity: .4 }
+}
+
+.cc-anim-fade-up  { animation: cc-fadeUp  0.35s ease both }
+.cc-anim-step-in  { animation: cc-stepIn  0.28s ease both }
+.cc-anim-step-back{ animation: cc-stepBack 0.28s ease both }
+.cc-anim-slide-in { animation: cc-slideIn 0.25s ease both }
+.cc-pulse         { animation: cc-pulse   2s ease-in-out infinite }
+
+@keyframes spin {
+  to { transform: rotate(360deg) }
+}
+
 /* ── Minimal overrides so shared components match the theme ── */
 .reg-wrap input,
 .reg-wrap input[type="password"],
