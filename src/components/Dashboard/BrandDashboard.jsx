@@ -12,7 +12,7 @@ const STATS = [
 ]
 
 const QUICK_ACTIONS = [
-  { label: 'Create Campaign', href: '/campaigns/new', primary: true },
+  { label: 'Create Campaign', href: '/campaigns/create', primary: true },
   { label: 'Discover Creators', href: '/discover', primary: false },
 ]
 
