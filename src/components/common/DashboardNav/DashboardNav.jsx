@@ -2,18 +2,30 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Search, Settings, Menu, X } from 'lucide-react'
-import { navItems } from '@/constants/navItems'
+import { Search, Menu, X, LogOut } from 'lucide-react'
+import { navItems, filterNavItemsByRole } from '@/constants/navItems'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import NavItem from './NavItem'
 import MobileDrawer from './MobileDrawer'
+import { useSession } from "next-auth/react";
+import getInitials from '@/lib/utils/getInitals'
 
 export default function DashboardNav() {
   const pathname = usePathname()
-  const [role, setRole] = useState('creator')
   const [menuOpen, setMenuOpen] = useState(false)
+  const {data: session} = useSession();
 
-  const activeItem = navItems.find(
+  const visibleNavItems = filterNavItemsByRole(navItems, session?.user?.role)
+
+  const activeItem = visibleNavItems.find(
     (item) => pathname === item.href || pathname.startsWith(item.href + '/')
   )
 
@@ -23,20 +35,27 @@ export default function DashboardNav() {
         <div className="w-full max-w-7xl mx-auto px-4 md:px-6 flex items-center gap-4">
 
           {/* Logo */}
-          <Link href="/home" className="flex items-center gap-2 shrink-0 no-underline">
-            <div className="w-8 h-8 bg-(--ink) rounded-lg flex items-center justify-center shrink-0">
-              <span className="w-2.5 h-2.5 rounded-full bg-(--red) block" />
-            </div>
-            <span
-              className="text-lg font-medium text-(--ink) tracking-wide whitespace-nowrap"
-              style={{ fontFamily: 'var(--serif)' }}
-            >
-              CollabXSphere
-            </span>
+          <Link href="/home" className="flex items-start shrink-0 no-underline">
+            <Image
+              src="/headerlogo.png"
+              alt="CollabXSphere"
+              width={181}
+              height={36}
+              priority
+              className="hidden md:block"
+            />
+            <Image
+              src="/headerlogoMobile.png"
+              alt="CollabXSphere"
+              width={37}
+              height={36}
+              priority
+              className="block md:hidden"
+            />
           </Link>
 
           {/* Search */}
-          <div className="flex-1 max-w-55 relative">
+          <div className="flex-1  max-w-55 relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-(--ink3) pointer-events-none" />
             <input
               type="text"
@@ -47,46 +66,51 @@ export default function DashboardNav() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex flex-1 items-center justify-center gap-8 pb-0.5">
-            {navItems.map((item) => (
+          <nav className="hidden md:flex flex-1 items-center justify-center gap-10 pb-0.5">
+            {visibleNavItems.map((item) => (
               <NavItem key={item.label} item={item} active={activeItem?.label === item.label} />
             ))}
           </nav>
 
           {/* Desktop right controls */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
-            {/* Role toggle */}
-            <div className="flex items-center bg-(--warm) rounded-full p-0.5 gap-0.5">
-              {['brand', 'creator'].map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRole(r)}
-                  className={`px-3.5 py-1 text-[0.7rem] font-semibold tracking-wide capitalize rounded-full border-none cursor-pointer transition-all duration-200 ${
-                    role === r ? 'bg-white text-(--ink) shadow-sm' : 'bg-transparent text-(--ink3)'
-                  }`}
-                  style={{ fontFamily: 'var(--sans)' }}
-                >
-                  {r.charAt(0).toUpperCase() + r.slice(1)}
+            {/* Avatar with dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-8.5 h-8.5 rounded-full bg-(--ink) border-none flex items-center justify-center cursor-pointer">
+                  <span className="text-[0.75rem] font-bold text-white uppercase" style={{ fontFamily: 'var(--sans)' }}>{getInitials(session?.user?.fullName) || 'U'}</span>
                 </button>
-              ))}
-            </div>
-
-            {/* Settings */}
-            <button className="w-8.5 h-8.5 rounded-full border border-black/15 bg-transparent flex items-center justify-center cursor-pointer text-(--ink3) hover:border-black/35 hover:text-(--ink) transition-all duration-200">
-              <Settings size={15} />
-            </button>
-
-            {/* Avatar */}
-            <button className="w-8.5 h-8.5 rounded-full bg-(--ink) border-none flex items-center justify-center cursor-pointer">
-              <span className="text-[0.75rem] font-bold text-white uppercase" style={{ fontFamily: 'var(--sans)' }}>P</span>
-            </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuItem
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="text-red-600 cursor-pointer bg-white focus:bg-red-50 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Mobile right: avatar + hamburger */}
           <div className="flex md:hidden ml-auto items-center gap-2 shrink-0">
-            <button className="w-8.5 h-8.5 rounded-full bg-(--ink) border-none flex items-center justify-center cursor-pointer">
-              <span className="text-[0.75rem] font-bold text-white uppercase" style={{ fontFamily: 'var(--sans)' }}>P</span>
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-8.5 h-8.5 rounded-full bg-(--ink) border-none flex items-center justify-center cursor-pointer">
+                  <span className="text-[0.75rem] font-bold text-white uppercase" style={{ fontFamily: 'var(--sans)' }}>{getInitials(session?.user?.fullName) || 'U'}</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuItem
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="text-red-600 cursor-pointer bg-white focus:bg-red-50 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
               aria-label="Toggle menu"
@@ -101,9 +125,8 @@ export default function DashboardNav() {
 
       {menuOpen && (
         <MobileDrawer
+          items={visibleNavItems}
           activeLabel={activeItem?.label}
-          role={role}
-          setRole={setRole}
           onClose={() => setMenuOpen(false)}
         />
       )}

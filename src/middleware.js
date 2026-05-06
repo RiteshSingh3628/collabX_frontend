@@ -21,6 +21,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    '/((?!api/auth|api/instagram|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api/auth|api/instagram|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|avif|ico|bmp)).*)',
   ],
 };
