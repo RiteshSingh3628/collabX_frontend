@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const navLinks = [
   { label: 'How it works', href: '#how' },
@@ -83,26 +85,24 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-12 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 group" style={{ textDecoration: 'none' }}>
-          <div
-            className="w-7 h-7 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform"
-            style={{ background: '#d43a2a' }}
-          >
-            <span className="w-2 h-2 rounded-full bg-white block" />
-          </div>
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '1.2rem',
-              fontWeight: 400,
-              letterSpacing: '0.05em',
-              color: scrolled ? '#0a0a0a' : '#ffffff',
-              transition: 'color 0.4s ease',
-            }}
-          >
-            CollabXSphere
-          </span>
-        </a>
+        <Link href="/home" className="flex items-start shrink-0 no-underline md: rounded-sm overflow-clip">
+            <Image
+              src="/headerlogo.png"
+              alt="CollabXSphere"
+              width={181}
+              height={36}
+              priority
+              className="hidden md:block"
+            />
+            <Image
+              src="/headerlogoMobile.png"
+              alt="CollabXSphere"
+              width={37}
+              height={36}
+              priority
+              className="block md:hidden"
+            />
+          </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">

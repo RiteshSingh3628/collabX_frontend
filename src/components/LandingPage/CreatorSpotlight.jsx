@@ -23,7 +23,7 @@ const creators = [
     handle: '@rohantechtalks',
     location: '320K',
     type: 'Tech & Gadgets',
-    image: 'https://images.unsplash.com/photo-1493689485253-f0f82b717d38?w=600&q=80&fit=crop&crop=top',
+    image: 'https://picsum.photos/seed/rohan-tech/600/800',
   },
   {
     id: 'anya',
@@ -138,7 +138,7 @@ export default function CreatorSpotlight() {
           <h2
             className="leading-tight"
             style={{
-              fontFamily: "'Bebas Neue', sans-serif",
+              fontFamily: "var(--bebas)",
               fontSize: 'clamp(42px, 5.5vw, 80px)',
               letterSpacing: '0.02em',
               color: '#0a0a0a'

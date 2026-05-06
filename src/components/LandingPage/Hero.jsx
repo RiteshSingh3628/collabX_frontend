@@ -9,7 +9,7 @@ export default function Hero() {
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1800&q=85&fit=crop"
+          src="/hero-banner3.jpg"
           alt="Creator shooting content"
           className="w-full h-full object-cover object-top"
           style={{ filter: 'brightness(0.55)' }}
@@ -63,7 +63,7 @@ export default function Hero() {
             fontSize: 'clamp(52px, 9vw, 110px)',
             letterSpacing: '0.02em',
             color: '#ffffff',
-            fontFamily: "Bebas Neue",
+            fontFamily: "var(--bebas)",
             lineHeight: 0.95
           }}
           initial={{ opacity: 0, y: 20 }}

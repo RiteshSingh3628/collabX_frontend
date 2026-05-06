@@ -32,8 +32,9 @@ export default function SocialProof() {
           }}
         >
           <div
-            className="font-['Bebas_Neue'] leading-none mb-1"
+            className="leading-none mb-1"
             style={{
+              fontFamily: "var(--bebas)",
               fontSize: 'clamp(36px, 5vw, 52px)',
               letterSpacing: '0.02em',
               color: '#0a0a0a'

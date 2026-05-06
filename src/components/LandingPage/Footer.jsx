@@ -23,7 +23,7 @@ export default function Footer() {
           <div
             className="flex items-center gap-2.5 mb-4"
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "var(--serif)",
               fontSize: '22px',
               fontWeight: 400,
               color: 'white'

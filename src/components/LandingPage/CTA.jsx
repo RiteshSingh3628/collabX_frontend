@@ -48,7 +48,7 @@ export default function CTA() {
         <h2
           className="mb-6 leading-tight"
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "var(--bebas)",
             fontSize: 'clamp(52px, 8vw, 110px)',
             letterSpacing: '0.02em',
             color: 'white'

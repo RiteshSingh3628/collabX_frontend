@@ -73,7 +73,7 @@ export default function CampaignCards() {
           <h2
             className="leading-tight"
             style={{
-              fontFamily: "'Bebas Neue', sans-serif",
+              fontFamily: "var(--bebas)",
               fontSize: 'clamp(42px, 5.5vw, 80px)',
               letterSpacing: '0.02em',
               color: '#0a0a0a'
@@ -164,7 +164,7 @@ export default function CampaignCards() {
                   { v: campaign.deadline, l: 'Deadline' }
                 ].map(({ v, l }) => (
                   <div key={l}>
-                    <div style={{ fontSize: '20px', fontWeight: 400, color: '#0a0a0a', fontFamily: "'Cormorant Garamond', serif" }}>
+                    <div style={{ fontSize: '20px', fontWeight: 400, color: '#0a0a0a', fontFamily: "var(--serif)" }}>
                       {v}
                     </div>
                     <div style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.07em', textTransform: 'uppercase', color: '#6a6a6a' }}>

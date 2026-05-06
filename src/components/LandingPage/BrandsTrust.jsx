@@ -38,7 +38,7 @@ export default function BrandsTrust() {
         <h2
           className="leading-tight"
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "var(--bebas)",
             fontSize: 'clamp(32px, 4vw, 56px)',
             letterSpacing: '0.02em',
             color: '#0a0a0a'
@@ -77,7 +77,7 @@ export default function BrandsTrust() {
             <div
               className="w-full h-full flex items-center justify-center group-hover:opacity-100 opacity-50 transition-opacity"
               style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "var(--bebas)",
                 fontSize: 'clamp(16px, 2vw, 22px)',
                 letterSpacing: '0.1em',
                 color: '#2a2a2a',
