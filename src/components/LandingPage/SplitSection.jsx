@@ -9,7 +9,7 @@ export default function SplitSection() {
       id: 'creators',
       tag: 'For Creators',
       title: 'TURN YOUR\nAUDIENCE INTO\nINCOME',
-      image: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=900&q=80&fit=crop&crop=top',
+      image: '/splitImgLeft.jpg',
       description: 'Get discovered by top brands actively seeking creators in your niche. Set your own rates, manage all your deals, and get paid on time — every time.',
       features: [
         'Get discovered by brands actively looking for your niche',
@@ -24,7 +24,7 @@ export default function SplitSection() {
       id: 'brands',
       tag: 'For Brands',
       title: 'BUILD CAMPAIGNS\nTHAT ACTUALLY\nCONVERT',
-      image: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?w=900&q=80&fit=crop&crop=top',
+      image: '/splitImgRight.jpg',
       description: 'Find creators who genuinely align with your brand values. Set budgets, manage briefs, track performance — all in one place.',
       features: [
         'Find creators by niche, platform, location & audience size',
@@ -89,7 +89,7 @@ export default function SplitSection() {
             <h2
               className="mb-4 leading-tight"
               style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "var(--bebas)",
                 fontSize: 'clamp(42px, 5vw, 82px)',
                 color: 'white',
                 letterSpacing: '0.02em',

@@ -6,7 +6,7 @@ const nextConfig = {
   },
   allowedDevOrigins: ["nocuously-unsavage-billye.ngrok-free.dev"],
   images: {
-    domains: ["images.unsplash.com", "res.cloudinary.com",'scontent.cdninstagram.com'],
+    domains: ["images.unsplash.com", "res.cloudinary.com",'scontent.cdninstagram.com', 'picsum.photos', 'fastly.picsum.photos'],
   },
 };
 
