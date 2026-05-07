@@ -30,12 +30,12 @@ export default function BusinessType() {
     startTransition(async () => {
       const data = {
         brandType: selectedOption.value,
-        currentStep: "3"
+        currentStep: 3
       }
       const response = await updateBrand(data);
       if (response?.success) {
         toast.success(response?.message);
-        await updateSession({ currentStep: "3" });
+        await updateSession({ currentStep: 3 });
         router.refresh();
       } else {
         toast.error(response?.message);

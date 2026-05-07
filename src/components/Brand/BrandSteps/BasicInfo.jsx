@@ -35,11 +35,11 @@ export default function BasicInfo() {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     startTransition(async () => {
-      data.currentStep = "2";
+      data.currentStep = 2;
       const response = await createBrand(data);
       if (response?.success) {
         toast.success(response?.message);
-        await updateSession({ currentStep: "2" });
+        await updateSession({ currentStep: 2 });
         router.refresh();
       } else {
         toast.error(response?.message);

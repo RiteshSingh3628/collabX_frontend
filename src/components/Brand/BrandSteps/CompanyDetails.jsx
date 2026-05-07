@@ -71,14 +71,14 @@ export default function CompanyDetails() {
       startTransition(async () => {
         const data = {
           brandType: selectedOption.value,
-          currentStep: "5",
+          currentStep: 5,
           companySize: selectedOption2.value,
           isProfileCompleted: true
         }
         const response = await updateBrand(data);
         if (response?.success) {
           toast.success(response?.message);
-          await updateSession({ currentStep: "5", isProfileCompleted: true });
+          await updateSession({ currentStep: 5, isProfileCompleted: true });
           router.refresh();
         } else {
           toast.error(response?.message);

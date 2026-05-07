@@ -44,12 +44,12 @@ export default function IndustryType() {
       startTransition(async () => {
         const data = {
           industryType: selectedOption.value,
-          currentStep: "4"
+          currentStep: 4
         }
         const response = await updateBrand(data);
         if (response?.success) {
           toast.success(response?.message);
-          await updateSession({ currentStep: "4" });
+          await updateSession({ currentStep: 4 });
           router.refresh();
         } else {
           toast.error(response?.message);
