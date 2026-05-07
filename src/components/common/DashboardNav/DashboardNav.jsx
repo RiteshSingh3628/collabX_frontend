@@ -5,8 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Search, Menu, X, LogOut } from 'lucide-react'
+import { Search, Menu, X, LogOut, User } from 'lucide-react'
 import { navItems, filterNavItemsByRole } from '@/constants/navItems'
+import { ROLES } from '@/lib/rbac'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,12 +19,21 @@ import MobileDrawer from './MobileDrawer'
 import { useSession } from "next-auth/react";
 import getInitials from '@/lib/utils/getInitals'
 
+function getProfileHref(role, id) {
+  if (!id) return null
+  const normalized = role?.toLowerCase()
+  if (normalized === ROLES.BRAND) return `/brand/${id}?mode=own`
+  if (normalized === ROLES.CREATOR) return `/creator/${id}`
+  return null
+}
+
 export default function DashboardNav() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const {data: session} = useSession();
 
   const visibleNavItems = filterNavItemsByRole(navItems, session?.user?.role)
+  const profileHref = getProfileHref(session?.user?.role, session?.user?.id)
 
   const activeItem = visibleNavItems.find(
     (item) => pathname === item.href || pathname.startsWith(item.href + '/')
@@ -82,6 +92,14 @@ export default function DashboardNav() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-44">
+                {profileHref && (
+                  <DropdownMenuItem asChild className="cursor-pointer border-b-2  bg-white focus:bg-white">
+                    <Link href={profileHref}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem
                   onClick={() => signOut({ callbackUrl: '/' })}
                   className="text-red-600 cursor-pointer bg-white focus:bg-red-50 focus:text-red-600"
@@ -102,6 +120,14 @@ export default function DashboardNav() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-44">
+                {profileHref && (
+                  <DropdownMenuItem asChild className="cursor-pointer bg-white focus:bg-white">
+                    <Link href={profileHref}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem
                   onClick={() => signOut({ callbackUrl: '/' })}
                   className="text-red-600 cursor-pointer bg-white focus:bg-red-50 focus:text-red-600"
