@@ -9,6 +9,7 @@ const URLS = {
     BRAND:{
         CREATE: `${BASE_URL}/api/brands/create`,
         UPDATE: `${BASE_URL}/api/brands/onboarding`,
+        PROFILE: (brandId) => `${BASE_URL}/api/brands/${brandId}`,
     },
     CREATOR:{
         CREATE: `${BASE_URL}/api/creators/create`,
