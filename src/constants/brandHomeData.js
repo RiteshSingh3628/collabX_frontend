@@ -1,0 +1,195 @@
+export const BRAND_HOME_PROFILE = {
+  name: 'Gymshark India',
+  initial: 'G',
+  subtitle: 'Fitness & Apparel Brand · Mumbai',
+  isActive: true,
+  statsGrid: [
+    { label: 'Campaign views', value: '1,240' },
+    { label: 'Applications', value: '24' },
+    { label: 'Total reach', value: '4.2M' },
+    { label: 'Budget spent', value: '₹1.2L' },
+  ],
+  metrics: [
+    { label: 'Active campaigns', value: '3', color: 'var(--green)' },
+    { label: 'Creators hired', value: '18', color: 'var(--blue)' },
+    { label: 'Avg. engagement', value: '5.8%', color: 'var(--blue)' },
+  ],
+}
+
+export const BRAND_HOME_CAMPAIGNS = [
+  { id: 'c1', name: 'Summer Fit Drop', meta: '13 creators · 7 slots left', status: 'live' },
+  { id: 'c2', name: 'Protein Launch \'25', meta: '8 creators · 12 slots left', status: 'live' },
+  { id: 'c3', name: 'Monsoon Collab', meta: '0 creators · 20 slots', status: 'draft' },
+]
+
+export const BRAND_HOME_APPLICANTS = [
+  {
+    id: 'a1',
+    name: 'Neha Singh',
+    sub: 'Beauty · 245K followers · Applied to Summer Fit Drop',
+    avatarBg: 'linear-gradient(135deg,#6b2fa0,#3d1a60)',
+    initial: 'N',
+    badge: '97% match',
+    badgeType: 'match',
+  },
+  {
+    id: 'a2',
+    name: 'Sahil Verma',
+    sub: 'Fitness · 88K followers · Applied to Protein Launch',
+    avatarBg: 'linear-gradient(135deg,#0d8a7a,#065a50)',
+    initial: 'S',
+    badge: '91% match',
+    badgeType: 'match',
+  },
+  {
+    id: 'a3',
+    name: 'Rohan Tech Talks',
+    sub: 'Tech · 320K followers · Applied to Summer Fit Drop',
+    avatarBg: 'linear-gradient(135deg,#1a4fd4,#0d32a0)',
+    initial: 'R',
+    badge: 'New',
+    badgeType: 'new',
+  },
+]
+
+export const BRAND_HOME_CREATORS = [
+  {
+    id: 'cr1',
+    name: 'Priya Sharma',
+    verified: true,
+    handle: '@priyafitlife · Fitness & Lifestyle · Mumbai',
+    platforms: ['Instagram', 'YouTube'],
+    followers: '180K',
+    engagement: '8.4%',
+    perPost: '₹54K',
+    niches: ['Fitness', 'Lifestyle', 'Wellness'],
+    bio: 'Authentic fitness creator focused on real results, not filters. Has worked with Nike and Decathlon. Audience is 70% women, 25–34.',
+    match: '98% match',
+    matchHot: true,
+    coverBg: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)',
+    avatarBg: 'linear-gradient(135deg,#d43a2a,#8a1a10)',
+    initial: 'P',
+    category: 'Fitness',
+  },
+  {
+    id: 'cr2',
+    name: 'Mehak Chawla',
+    verified: false,
+    handle: '@mehakstyle · Fashion & Apparel · Delhi',
+    platforms: ['Instagram', 'Instagram Reels'],
+    followers: '190K',
+    engagement: '5.8%',
+    perPost: '₹40K',
+    niches: ['Fashion', 'Apparel', 'Streetwear'],
+    bio: 'Fashion-forward creator with a strong eye for sports-casual styling. Audience skews 18–28. Consistently high reel saves.',
+    match: '94% match',
+    matchHot: false,
+    coverBg: 'linear-gradient(135deg,#4a1942,#6b2fa0,#8a3a6a)',
+    avatarBg: 'linear-gradient(135deg,#c04828,#7a2a14)',
+    initial: 'M',
+    category: 'Fashion',
+  },
+  {
+    id: 'cr3',
+    name: 'Sahil Verma',
+    verified: true,
+    handle: '@sahilfitness · Fitness & Nutrition · Pune',
+    platforms: ['YouTube', 'Instagram'],
+    followers: '88K',
+    engagement: '9.3%',
+    perPost: '₹28K',
+    niches: ['Fitness', 'Nutrition', 'Gym'],
+    bio: 'Micro creator with unusually high engagement. Specialises in gym lifestyle and protein nutrition. Audience trusts his product recommendations heavily.',
+    match: '89% match',
+    matchHot: false,
+    coverBg: 'linear-gradient(135deg,#0d4a28,#0d8a7a,#1a4fd4)',
+    avatarBg: 'linear-gradient(135deg,#0d8a7a,#065a50)',
+    initial: 'S',
+    category: 'Fitness',
+  },
+  {
+    id: 'cr4',
+    name: 'Zara Lifestyles',
+    verified: false,
+    handle: '@zaralifestyle · Lifestyle & Travel · Bangalore',
+    platforms: ['Instagram', 'YouTube'],
+    followers: '320K',
+    engagement: '4.2%',
+    perPost: '₹65K',
+    niches: ['Lifestyle', 'Travel', 'Wellness'],
+    bio: 'Premium lifestyle creator with an aspirational, travel-forward aesthetic. Works with top-tier brands on curated, story-driven campaigns.',
+    match: '82% match',
+    matchHot: false,
+    coverBg: 'linear-gradient(135deg,#0a1628,#1a3a6a,#2a5a9a)',
+    avatarBg: 'linear-gradient(135deg,#1a4fd4,#0d32a0)',
+    initial: 'Z',
+    category: 'Lifestyle',
+  },
+]
+
+export const BRAND_HOME_TRENDING = [
+  {
+    name: 'Ananya Fitness',
+    meta: 'Fitness · 310K · 11.2%',
+    earn: '₹70K',
+    avatarBg: 'linear-gradient(135deg,#d43a2a,#8a1a10)',
+    initial: 'A',
+  },
+  {
+    name: 'Riya Kapoor',
+    meta: 'Lifestyle · 520K · 6.8%',
+    earn: '₹95K',
+    avatarBg: 'linear-gradient(135deg,#6b2fa0,#3d1a60)',
+    initial: 'R',
+  },
+  {
+    name: 'Vikram Runs',
+    meta: 'Sports · 145K · 9.1%',
+    earn: '₹38K',
+    avatarBg: 'linear-gradient(135deg,#0d5a8a,#073d5e)',
+    initial: 'V',
+  },
+  {
+    name: 'Kavya Wellness',
+    meta: 'Wellness · 92K · 12.4%',
+    earn: '₹26K',
+    avatarBg: 'linear-gradient(135deg,#1a7a45,#0d4a28)',
+    initial: 'K',
+  },
+]
+
+export const BRAND_HOME_BUDGET = {
+  items: [
+    { campaign: 'Summer Fit Drop', spent: '₹72K', total: '₹1.2L', pct: 60, variant: 'live' },
+    { campaign: 'Protein Launch', spent: '₹45K', total: '₹90K', pct: 50, variant: 'mid' },
+    { campaign: 'Monsoon Collab', spent: '₹0', total: '₹1.2L', pct: 0, variant: 'low' },
+  ],
+  totalRemaining: '₹1.83L',
+}
+
+export const BRAND_HOME_ACTIVITY = [
+  {
+    id: 'act1',
+    type: 'green',
+    parts: [{ bold: true, text: 'Neha Singh' }, { text: ' applied to Summer Fit Drop' }],
+    time: '2h ago',
+  },
+  {
+    id: 'act2',
+    type: 'blue',
+    parts: [{ text: 'Protein Launch reached 50% fill rate' }],
+    time: '5h ago',
+  },
+  {
+    id: 'act3',
+    type: 'red',
+    parts: [{ text: 'Payment ₹28K sent to ' }, { bold: true, text: 'Sahil Verma' }],
+    time: 'Yesterday',
+  },
+  {
+    id: 'act4',
+    type: 'amber',
+    parts: [{ text: '3 messages from shortlisted creators' }],
+    time: 'Yesterday',
+  },
+]

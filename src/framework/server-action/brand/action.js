@@ -1,5 +1,6 @@
 import URLS from "@/constants/urls";
-import apiClient from "@/lib/utils/apiClient";
+import apiClient, { serverApiClient } from "@/lib/utils/apiClient";
+import { getUserSessionServer } from "@/lib/utils/session";
 
 export async function updateBrand(payload){
     try {
@@ -16,6 +17,25 @@ export async function updateBrand(payload){
         return response
     } catch (error) {
         console.log("updating brand error",error)
+    }
+}
+
+
+export async function getBrandProfile() {
+    try {
+        const session = await getUserSessionServer();
+        const brandId = session?.user?.id;
+        if (!brandId) return { success: false, message: 'No brand id in session' };
+
+        const url = URLS.BRAND.PROFILE(brandId);
+        const response = await serverApiClient(url, { method: 'GET' });
+        if (!response?.success) {
+            return { success: false, message: response?.message || 'Failed to fetch brand profile' };
+        }
+        return response;
+    } catch (error) {
+        console.log('getBrandProfile error', error);
+        return { success: false, message: 'Failed to fetch brand profile' };
     }
 }
 
